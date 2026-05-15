@@ -43,7 +43,7 @@ export class ReviewsService {
     const totalCount = reviews.length;
     const averageRating =
       totalCount > 0
-        ? Math.round((reviews.reduce((sum, r) => sum + r.rating, 0) / totalCount) * 10) / 10
+        ? Math.round((reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / totalCount) * 10) / 10
         : 0;
 
     return { reviews, averageRating, totalCount };

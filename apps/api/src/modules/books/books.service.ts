@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@unkora/database';
 
 import { PrismaService } from '../../database/prisma.service';
 import type { BookFilterDto } from './dto/book-filter.dto';
@@ -83,14 +83,14 @@ export class BooksService {
       this.prisma.bookDetail.findMany({ where: { binding: { not: null } }, select: { binding: true }, distinct: ['binding'] }),
     ]);
 
-    const uniqueGenres = [...new Set(genres.flatMap((b) => b.genres))].sort();
+    const uniqueGenres = [...new Set(genres.flatMap((b: any) => b.genres))].sort();
 
     return {
-      authors: authors.map((b) => b.author),
-      publishers: publishers.map((b) => b.publisher).filter(Boolean),
-      languages: languages.map((b) => b.language),
+      authors: authors.map((b: any) => b.author),
+      publishers: publishers.map((b: any) => b.publisher).filter(Boolean),
+      languages: languages.map((b: any) => b.language),
       genres: uniqueGenres,
-      bindings: bindings.map((b) => b.binding).filter(Boolean),
+      bindings: bindings.map((b: any) => b.binding).filter(Boolean),
     };
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { OrderStatus } from '@prisma/client';
+import { OrderStatus } from '@unkora/database';
 
 import { PrismaService } from '../../database/prisma.service';
 
@@ -81,7 +81,7 @@ export class AdminService {
     });
 
     const chart: Record<string, number> = {};
-    orders.forEach((o) => {
+    orders.forEach((o: any) => {
       const key = o.createdAt.toISOString().split('T')[0]!;
       chart[key] = (chart[key] ?? 0) + Number(o.total);
     });
