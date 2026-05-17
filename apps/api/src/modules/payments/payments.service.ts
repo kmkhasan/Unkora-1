@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { PaymentMethod, PaymentStatus } from '@prisma/client';
+import { PaymentMethod, PaymentStatus } from '@unkora/database';
 
 import { PrismaService } from '../../database/prisma.service';
 
@@ -72,7 +72,7 @@ export class PaymentsService {
     const payment = await this.prisma.payment.findFirst({ where: { transactionId } });
     if (!payment) return;
 
-    await this.prisma.$transaction(async (tx) => {
+    await this.prisma.$transaction(async (tx: any) => {
       await tx.payment.update({
         where: { id: payment.id },
         data: { status, gatewayRef, paidAt: status === PaymentStatus.PAID ? new Date() : undefined },
