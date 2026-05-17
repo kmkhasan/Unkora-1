@@ -38,7 +38,7 @@ function FilterPanel({
   setMaxPriceInput: (v: string) => void;
   minPrice: number | undefined;
   maxPrice: number | undefined;
-  inStock: true | undefined;
+  inStock: boolean | undefined;
   hasActiveFilters: boolean;
   setParam: (k: string, v: string | undefined) => void;
   clearAllFilters: () => void;
