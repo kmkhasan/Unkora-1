@@ -45,6 +45,7 @@ function PriceSlider({ min, max, onChange }: { min: number; max: number; onChang
   }, [min, max, onChange, fromPct]);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
     const up = () => { dragging.current = null; };
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', up);
