@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { OrderStatus } from '@unkora/database';
+import { OrderStatus } from '@prisma/client';
 import * as crypto from 'crypto';
 
 import { PrismaService } from '../../database/prisma.service';

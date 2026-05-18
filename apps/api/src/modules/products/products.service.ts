@@ -1,6 +1,6 @@
 import { ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Prisma } from '@unkora/database';
+import { Prisma } from '@prisma/client';
 import type { Cache } from 'cache-manager';
 
 import { PrismaService } from '../../database/prisma.service';

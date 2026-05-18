@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { DiscountType } from '@unkora/database';
+import { DiscountType } from '@prisma/client';
 import {
   IsDateString,
   IsEnum,
