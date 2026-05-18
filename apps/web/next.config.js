@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: process.env.VERCEL ? undefined : 'standalone',
+  output: process.env.VERCEL || process.env.BUILD_TARGET === 'cloudflare' ? undefined : 'standalone',
   transpilePackages: ['@unkora/ui'],
   images: {
     remotePatterns: [
