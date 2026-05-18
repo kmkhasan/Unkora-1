@@ -66,7 +66,7 @@ export default function AdminOrdersPage() {
           </thead>
           <tbody className="divide-y">
             {data?.data?.map((order: { id: string; orderNumber: string; status: string; total: string; createdAt: string; customer?: { name?: string; email?: string } }) => (
-              <tr key={order.id} className="hover:bg-muted/20 transition-colors cursor-pointer" onClick={e => { if ((e.target as HTMLElement).closest('select')) return; window.location.href = `/admin/orders/${order.id}`; }}>
+              <tr key={order.id} className="hover:bg-muted/20 transition-colors cursor-pointer" onClick={e => { if ((e.target as HTMLElement).closest('select')) return; if (typeof window !== 'undefined') { window.location.href = `/admin/orders/${order.id}`; } }}>
                 <td className="px-4 py-3 font-medium">#{order.orderNumber}</td>
                 <td className="hidden px-4 py-3 sm:table-cell">
                   <p>{order.customer?.name}</p>

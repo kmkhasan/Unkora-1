@@ -127,6 +127,7 @@ function CustomerModal({ user, onClose }: { user: UserDetail; onClose: () => voi
   });
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
@@ -442,6 +443,7 @@ export default function AdminUsersPage() {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       setDebouncedSearch(search);
