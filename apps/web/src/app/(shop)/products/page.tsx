@@ -47,6 +47,7 @@ function PriceSlider({
   const onMouseUp = useCallback(() => { dragging.current = null; }, []);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
     window.addEventListener('touchmove', e => onMouseMove(e.touches[0] as unknown as MouseEvent));
@@ -173,6 +174,7 @@ function FilterPanel({
 
   // Sync slider when filters reset externally
   useEffect(() => {
+    if (typeof window === "undefined") return;
     setSliderMin(filters.minPrice ?? 0);
     setSliderMax(filters.maxPrice ?? PRICE_MAX);
     setPriceInputMin(filters.minPrice ? String(filters.minPrice) : '');
