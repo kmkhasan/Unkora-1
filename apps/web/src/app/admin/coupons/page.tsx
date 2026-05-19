@@ -308,7 +308,7 @@ export default function AdminCouponsPage() {
                       </button>
                       <button
                         onClick={() => {
-                          if (window.confirm(`Delete coupon "${coupon.code}"?`)) {
+                          if (typeof window !== "undefined" && window.confirm(`Delete coupon "${coupon.code}"?`)) {
                             deleteMutation.mutate(coupon.id);
                           }
                         }}

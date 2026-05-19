@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { OrderStatus } from '@prisma/client';
+import { OrderStatus } from '@unkora/database';
 
 import { PrismaService } from '../../database/prisma.service';
 

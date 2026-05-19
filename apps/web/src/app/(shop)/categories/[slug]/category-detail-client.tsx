@@ -46,9 +46,11 @@ function PriceSlider({ min, max, onChange }: { min: number; max: number; onChang
 
   useEffect(() => {
     const up = () => { dragging.current = null; };
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', up);
-    return () => { window.removeEventListener('mousemove', onMouseMove); window.removeEventListener('mouseup', up); };
+    if (typeof window !== "undefined") {
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', up);
+      return () => { window.removeEventListener('mousemove', onMouseMove); window.removeEventListener('mouseup', up); };
+    }
   }, [onMouseMove]);
 
   return (
