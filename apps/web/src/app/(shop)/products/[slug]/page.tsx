@@ -45,3 +45,4 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
   return <ProductDetailClient slug={slug} />;
 }
+export const runtime = 'edge';

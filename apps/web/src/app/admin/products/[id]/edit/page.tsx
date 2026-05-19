@@ -663,3 +663,4 @@ export default function AdminProductEditPage({ params }: { params: Promise<{ id:
     </div>
   );
 }
+export const runtime = 'edge';
