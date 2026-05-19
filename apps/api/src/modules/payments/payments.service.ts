@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { OrderStatus, PaymentMethod, PaymentStatus } from '@unkora/database';
+import { OrderStatus, PaymentMethod, PaymentStatus } from '@prisma/client';
 
 import { PrismaService } from '../../database/prisma.service';
 

@@ -42,4 +42,3 @@ coverage
 *.tsbuildinfo
 .cache
 apps/api/typesense-server-27.1-linux-amd64.tar.gz
-.vercel/

@@ -1,5 +1,5 @@
 import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
-import { ShipmentStatus } from '@unkora/database';
+import { ShipmentStatus } from '@prisma/client';
 
 export class UpdateShipmentDto {
   @IsOptional()

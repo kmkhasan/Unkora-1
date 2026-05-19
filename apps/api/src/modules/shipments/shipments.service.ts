@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { OrderStatus, ShipmentStatus } from '@unkora/database';
+import { OrderStatus, ShipmentStatus } from '@prisma/client';
 import { PrismaService } from '../../database/prisma.service';
 import { CreateShipmentDto } from './dto/create-shipment.dto';
 import { UpdateShipmentDto } from './dto/update-shipment.dto';
