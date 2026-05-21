@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import { Metadata } from 'next';
 import ProductDetailClient from './product-detail-client';
 
