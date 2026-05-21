@@ -128,8 +128,8 @@ function CustomerModal({ user, onClose }: { user: UserDetail; onClose: () => voi
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
+    if (typeof window !== "undefined") window.addEventListener('keydown', handler);
+    return () => { if (typeof window !== "undefined") window.removeEventListener('keydown', handler); };
   }, [onClose]);
 
   const orderStatusColor: Record<string, string> = {

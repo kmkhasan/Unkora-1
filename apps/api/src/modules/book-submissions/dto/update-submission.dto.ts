@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { BookSubmissionStatus } from '@prisma/client';
+import { BookSubmissionStatus } from '@unkora/database';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
 
 export class UpdateSubmissionDto {
