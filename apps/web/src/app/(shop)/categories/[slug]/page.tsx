@@ -49,3 +49,4 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
     </Suspense>
   );
 }
+export const runtime = 'edge';
