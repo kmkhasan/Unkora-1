@@ -305,4 +305,3 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
     </div>
   );
 }
-export const runtime = 'edge';

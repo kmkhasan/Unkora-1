@@ -248,4 +248,3 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
     </div>
   );
 }
-export const runtime = 'edge';
