@@ -1173,7 +1173,7 @@ export function Header() {
               onClick={() => setSidebarOpen(false)}
               className={cn(
                 'py-3.5 px-5 hover:bg-orange-50 font-semibold text-gray-700 flex items-center gap-3 border-b border-gray-100 transition-colors',
-                pathname === '/products' && new URLSearchParams(window.location.search).get('categorySlug') === cat.slug ? 'text-primary bg-accent' : '',
+                pathname === '/products' && new URLSearchParams(typeof window !== "undefined" ? window.location.search : "").get('categorySlug') === cat.slug ? 'text-primary bg-accent' : '',
               )}
             >
               <span className="text-primary"><cat.icon className="w-4 h-4" /></span>
