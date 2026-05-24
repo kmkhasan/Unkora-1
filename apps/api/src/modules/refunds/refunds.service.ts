@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { OrderStatus, RefundStatus } from '@prisma/client';
+import { OrderStatus, RefundStatus } from '@unkora/database';
 import { PrismaService } from '../../database/prisma.service';
 import type { CreateRefundDto } from './dto/create-refund.dto';
 import type { UpdateRefundDto } from './dto/update-refund.dto';
@@ -104,11 +104,11 @@ export class RefundsService {
     const refund = await this.prisma.refund.findUnique({ where: { id } });
     if (!refund) throw new NotFoundException('Refund not found');
 
-    const isTerminalStatus = [
+    const isTerminalStatus = ([
       RefundStatus.APPROVED,
       RefundStatus.REJECTED,
       RefundStatus.PROCESSED,
-    ].includes(dto.status);
+    ] as RefundStatus[]).includes(dto.status);
 
     return this.prisma.refund.update({
       where: { id },

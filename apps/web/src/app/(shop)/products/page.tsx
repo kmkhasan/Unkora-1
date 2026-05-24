@@ -47,6 +47,7 @@ function PriceSlider({
   const onMouseUp = useCallback(() => { dragging.current = null; }, []);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
     window.addEventListener('touchmove', e => onMouseMove(e.touches[0] as unknown as MouseEvent));
