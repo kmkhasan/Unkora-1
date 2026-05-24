@@ -318,7 +318,7 @@ export default function HomePage() {
   const { data: organicData } = useQuery({ queryKey: ['products', 'organic'], queryFn: () => productsApi.getAll({ categorySlug: 'organic-foods', limit: 6 } as Parameters<typeof productsApi.getAll>[0]) });
   const organicProducts = organicData?.data ?? [];
 
-  const slide = HERO_SLIDES[slideIndex];
+  const slide = HERO_SLIDES[slideIndex] || HERO_SLIDES[0];
 
   return (
     <div style={{ backgroundColor: '#f5f5f5' }}>
