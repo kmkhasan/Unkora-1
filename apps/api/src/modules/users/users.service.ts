@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import type { User } from '@prisma/client';
-import type { UserDto } from '@unkora/types';
+import type { User } from '@unkora/database';
+import type { UserDto, UserRole } from '@unkora/types';
 
 import { PrismaService } from '../../database/prisma.service';
 import type { CreateAddressDto, UpdateAddressDto } from './dto/address.dto';
@@ -100,7 +100,7 @@ export class UsersService {
       firstName: user.firstName,
       lastName: user.lastName,
       avatarUrl: user.avatarUrl,
-      role: user.role,
+      role: user.role as UserRole,
       status: user.status,
       emailVerifiedAt: user.emailVerifiedAt?.toISOString() ?? null,
       createdAt: user.createdAt.toISOString(),

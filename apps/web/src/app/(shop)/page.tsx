@@ -331,16 +331,16 @@ export default function HomePage() {
 
           {/* Hero Banner */}
           <div className="relative rounded-xl overflow-hidden flex-shrink-0 h-[220px] sm:h-[280px] xl:w-[360px] xl:h-auto xl:min-h-[440px] cursor-pointer group"
-            onClick={() => window.location.href = slide.href}>
-            <div className={`absolute inset-0 bg-gradient-to-br ${slide.bg} transition-all duration-700`} />
-            <Image src={slide.img} alt="hero" fill unoptimized priority className="object-cover opacity-30 group-hover:opacity-40 transition-opacity duration-500" sizes="(max-width:1280px) 100vw, 360px" />
+            onClick={() => { if (slide?.href) window.location.href = slide.href; }}>
+            <div className={`absolute inset-0 bg-gradient-to-br ${slide?.bg} transition-all duration-700`} />
+            <Image src={slide?.img || ''} alt="hero" fill unoptimized priority className="object-cover opacity-30 group-hover:opacity-40 transition-opacity duration-500" sizes="(max-width:1280px) 100vw, 360px" />
             <div className="absolute inset-0 flex flex-col justify-end p-6 xl:p-8">
               <h1 className="text-xl sm:text-2xl xl:text-3xl font-black text-white leading-tight mb-2">
-                {lang === 'bn' ? slide.headlineBn : slide.headlineEn}
+                {lang === 'bn' ? slide?.headlineBn : slide?.headlineEn}
               </h1>
-              <p className="text-white/70 text-xs mb-5">{lang === 'bn' ? slide.subBn : slide.subEn}</p>
+              <p className="text-white/70 text-xs mb-5">{lang === 'bn' ? slide?.subBn : slide?.subEn}</p>
               <span className="inline-flex items-center gap-2 bg-white text-gray-900 font-black text-sm px-5 py-2.5 rounded-lg w-fit group-hover:bg-yellow-400 transition-colors duration-300">
-                {lang === 'bn' ? slide.ctaBn : slide.ctaEn} <ArrowRight className="w-4 h-4" />
+                {lang === 'bn' ? slide?.ctaBn : slide?.ctaEn} <ArrowRight className="w-4 h-4" />
               </span>
             </div>
             {/* Slide dots */}
