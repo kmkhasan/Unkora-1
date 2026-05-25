@@ -1,5 +1,5 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { DeliveryBoyStatus, UserRole, UserStatus } from '@prisma/client';
+import { DeliveryBoyStatus, UserRole, UserStatus } from '@unkora/database';
 import * as argon2 from 'argon2';
 
 import { PrismaService } from '../../database/prisma.service';

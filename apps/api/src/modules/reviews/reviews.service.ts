@@ -1,5 +1,5 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { OrderStatus } from '@prisma/client';
+import { OrderStatus } from '@unkora/database';
 
 import { PrismaService } from '../../database/prisma.service';
 import type { CreateReviewDto } from './dto/create-review.dto';
