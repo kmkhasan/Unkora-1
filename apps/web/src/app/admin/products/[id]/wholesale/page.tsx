@@ -79,8 +79,9 @@ export default function WholesalePricingPage() {
 
     // Validate
     for (let i = 0; i < tiers.length; i++) {
-      if (tiers[i].minQty <= 0) { setSaveError(`Tier ${i + 1}: Min Qty must be greater than 0`); return; }
-      if (tiers[i].price <= 0)  { setSaveError(`Tier ${i + 1}: Price must be greater than 0`); return; }
+      if (!tiers[i]) continue;
+      if (tiers[i]!.minQty <= 0) { setSaveError(`Tier ${i + 1}: Min Qty must be greater than 0`); return; }
+      if (tiers[i]!.price <= 0)  { setSaveError(`Tier ${i + 1}: Price must be greater than 0`); return; }
     }
 
     // Check for duplicate minQty
@@ -209,8 +210,8 @@ export default function WholesalePricingPage() {
                   {sortedTiers.map((t, i) => (
                     <div key={i} className="flex justify-between text-sm">
                       <span className="text-muted-foreground">
-                        {i < sortedTiers.length - 1
-                          ? `${t.minQty} – ${sortedTiers[i + 1].minQty - 1} units`
+                        {i < sortedTiers.length - 1 && sortedTiers[i + 1]
+                          ? `${t.minQty} – ${sortedTiers[i + 1]!.minQty - 1} units`
                           : `${t.minQty}+ units`}
                       </span>
                       <span className="font-semibold">৳{t.price.toLocaleString('en-BD', { minimumFractionDigits: 2 })}</span>

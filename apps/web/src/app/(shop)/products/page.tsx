@@ -47,14 +47,16 @@ function PriceSlider({
   const onMouseUp = useCallback(() => { dragging.current = null; }, []);
 
   useEffect(() => {
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
-    window.addEventListener('touchmove', e => onMouseMove(e.touches[0] as unknown as MouseEvent));
-    window.addEventListener('touchend', onMouseUp);
-    return () => {
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', onMouseUp);
-    };
+    if (typeof window !== 'undefined') {
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
+      window.addEventListener('touchmove', e => onMouseMove(e.touches[0] as unknown as MouseEvent));
+      window.addEventListener('touchend', onMouseUp);
+      return () => {
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mouseup', onMouseUp);
+      };
+    }
   }, [onMouseMove, onMouseUp]);
 
   const minPct = pct(min);
