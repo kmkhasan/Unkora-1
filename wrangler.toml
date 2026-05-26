@@ -2,7 +2,7 @@ name = "unkora"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
+pages_build_output_dir = "apps/web/.next"
+
 [build]
 command = "npm ci && BUILD_TARGET=cloudflare npx turbo build --filter=@unkora/web"
-
-pages_build_output_dir = "apps/web/.next"
