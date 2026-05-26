@@ -5,5 +5,4 @@ compatibility_flags = ["nodejs_compat"]
 [build]
 command = "npm ci && BUILD_TARGET=cloudflare npx turbo build --filter=@unkora/web"
 
-[[pages_build_output_dir]]
-path = "apps/web/.next"
+pages_build_output_dir = "apps/web/.next"
