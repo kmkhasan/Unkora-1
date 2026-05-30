@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { PaymentMethod } from '@prisma/client';
+import { PaymentMethod } from '@unkora/database';
 
 export class CreateOrderDto {
   @ApiProperty()
