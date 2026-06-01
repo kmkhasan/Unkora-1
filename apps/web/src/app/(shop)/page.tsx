@@ -214,7 +214,7 @@ function MiniCard({ product, lang }: { product: Product; lang: string }) {
           <button
             onClick={e => { e.preventDefault(); e.stopPropagation(); if (inStock) addItem.mutate({ productId: product.id, quantity: 1, guestData: { name: product.name, price: salePrice, image: img, slug: product.slug } }); }}
             disabled={!inStock}
-            className={`flex items-center justify-center gap-1 h-9 rounded-lg text-xs font-bold transition-all ${inStock ? 'border border-primary/30 text-primary hover:bg-primary hover:text-white' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}
+            className={`flex items-center justify-center gap-1 h-9 rounded-lg text-xs font-bold transition-all ${inStock ? 'border border-primary/30 text-primary hover:bg-primary hover:text-white hover:border-primary active:scale-95' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}
           >
             <ShoppingCart className="w-3.5 h-3.5 flex-shrink-0" />
             <span>{lang === 'bn' ? 'কার্ট' : 'Cart'}</span>
@@ -296,7 +296,7 @@ function FlashCard({ product, lang }: { product: Product; lang: string }) {
           <button
             onClick={e => { e.preventDefault(); e.stopPropagation(); if (inStock) addItem.mutate({ productId: product.id, quantity: 1, guestData: { name: product.name, price: salePrice, image: img, slug: product.slug } }); }}
             disabled={!inStock}
-            className={`flex items-center justify-center gap-1 h-9 rounded-lg text-xs font-bold transition-all ${inStock ? 'border border-primary/30 text-primary hover:bg-primary hover:text-white' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}>
+            className={`flex items-center justify-center gap-1 h-9 rounded-lg text-xs font-bold transition-all ${inStock ? 'border border-primary/30 text-primary hover:bg-primary hover:text-white hover:border-primary active:scale-95' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}>
             <ShoppingCart className="w-3.5 h-3.5 flex-shrink-0" />
             <span>{lang === 'bn' ? 'কার্ট' : 'Cart'}</span>
           </button>
@@ -630,6 +630,44 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════
+          ISLAMIC LIFESTYLE BANNER
+      ═══════════════════════════════════════════════════════════════ */}
+      <section className="py-3 px-3 md:px-4">
+        <div className="max-w-7xl mx-auto">
+          <Link href="/islamic-lifestyle" className="block rounded-2xl overflow-hidden relative group cursor-pointer"
+            style={{ background: 'linear-gradient(135deg, #064e3b 0%, #065f46 40%, #047857 100%)' }}>
+            <div className="absolute inset-0 opacity-10"
+              style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, #10b981 0%, transparent 50%), radial-gradient(circle at 80% 20%, #34d399 0%, transparent 40%)' }} />
+            <div className="relative flex flex-col sm:flex-row items-center justify-between px-6 py-6 gap-4">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-2xl">🕌</span>
+                  <span className="text-xs font-bold text-emerald-300 uppercase tracking-widest">Islamic Lifestyle</span>
+                </div>
+                <h2 className="text-white font-black text-xl sm:text-2xl leading-tight mb-1">
+                  {lang === 'bn' ? 'ইসলামিক লাইফস্টাইল' : 'Islamic Lifestyle'}
+                </h2>
+                <p className="text-emerald-200 text-sm max-w-md">
+                  {lang === 'bn'
+                    ? 'নামাজের সরঞ্জাম, ইসলামিক বই, আতর, তাসবিহ ও আরও অনেক কিছু'
+                    : 'Prayer essentials, Islamic books, perfumes, tasbih and more'}
+                </p>
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {['🕌 নামাজ', '📖 বই', '✨ কুরআন', '🌹 আতর', '📿 তাসবিহ'].map(tag => (
+                    <span key={tag} className="text-xs bg-white/10 text-emerald-100 px-2.5 py-1 rounded-full border border-white/20">{tag}</span>
+                  ))}
+                </div>
+              </div>
+              <div className="flex-shrink-0 flex items-center gap-2 bg-white text-emerald-800 font-bold px-5 py-2.5 rounded-xl group-hover:bg-emerald-50 transition-colors text-sm">
+                {lang === 'bn' ? 'দেখুন' : 'Explore'}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+              </div>
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════
           PROMO BANNERS (3 columns)
       ═══════════════════════════════════════════════════════════════ */}
       <section className="py-3 px-3 md:px-4">
@@ -767,44 +805,6 @@ export default function HomePage() {
             </div>
             {/* subtle top-right decorative circle like Islamic banner */}
             <div className="absolute top-0 right-0 w-48 h-48 bg-amber-700/20 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-          </Link>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════════════════════
-          ISLAMIC LIFESTYLE BANNER
-      ═══════════════════════════════════════════════════════════════ */}
-      <section className="py-3 px-3 md:px-4">
-        <div className="max-w-7xl mx-auto">
-          <Link href="/islamic-lifestyle" className="block rounded-2xl overflow-hidden relative group cursor-pointer"
-            style={{ background: 'linear-gradient(135deg, #064e3b 0%, #065f46 40%, #047857 100%)' }}>
-            <div className="absolute inset-0 opacity-10"
-              style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, #10b981 0%, transparent 50%), radial-gradient(circle at 80% 20%, #34d399 0%, transparent 40%)' }} />
-            <div className="relative flex flex-col sm:flex-row items-center justify-between px-6 py-6 gap-4">
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-2xl">🕌</span>
-                  <span className="text-xs font-bold text-emerald-300 uppercase tracking-widest">Islamic Lifestyle</span>
-                </div>
-                <h2 className="text-white font-black text-xl sm:text-2xl leading-tight mb-1">
-                  {lang === 'bn' ? 'ইসলামিক লাইফস্টাইল' : 'Islamic Lifestyle'}
-                </h2>
-                <p className="text-emerald-200 text-sm max-w-md">
-                  {lang === 'bn'
-                    ? 'নামাজের সরঞ্জাম, ইসলামিক বই, আতর, তাসবিহ ও আরও অনেক কিছু'
-                    : 'Prayer essentials, Islamic books, perfumes, tasbih and more'}
-                </p>
-                <div className="flex flex-wrap gap-2 mt-3">
-                  {['🕌 নামাজ', '📖 বই', '✨ কুরআন', '🌹 আতর', '📿 তাসবিহ'].map(tag => (
-                    <span key={tag} className="text-xs bg-white/10 text-emerald-100 px-2.5 py-1 rounded-full border border-white/20">{tag}</span>
-                  ))}
-                </div>
-              </div>
-              <div className="flex-shrink-0 flex items-center gap-2 bg-white text-emerald-800 font-bold px-5 py-2.5 rounded-xl group-hover:bg-emerald-50 transition-colors text-sm">
-                {lang === 'bn' ? 'দেখুন' : 'Explore'}
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-              </div>
-            </div>
           </Link>
         </div>
       </section>
