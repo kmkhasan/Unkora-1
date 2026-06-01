@@ -552,7 +552,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const { isAuthenticated, user } = useAuthStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [clearing, setClearing] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const queryClient = useQueryClient();
+
+  // Wait for Zustand store to hydrate from localStorage before making auth decisions
+  useEffect(() => { setMounted(true); }, []);
 
   const handleClearCache = useCallback(async () => {
     setClearing(true);
@@ -563,16 +567,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, [queryClient]);
 
   useEffect(() => {
+    if (!mounted) return;
     if (pathname === '/admin/login') return;
     if (!isAuthenticated) { router.push('/admin/login'); return; }
     if (user?.role !== 'ADMIN' && user?.role !== 'SUPER_ADMIN') router.push('/');
-  }, [isAuthenticated, user, router, pathname]);
+  }, [mounted, isAuthenticated, user, router, pathname]);
 
   // Close mobile sidebar on route change
   useEffect(() => { setSidebarOpen(false); }, [pathname]);
 
   // Login page renders without the admin shell
   if (pathname === '/admin/login') return <>{children}</>;
+
+  // Show nothing until hydrated to avoid flash redirect
+  if (!mounted) return <div className="min-h-screen bg-gray-950" />;
 
   if (!isAuthenticated || (user?.role !== 'ADMIN' && user?.role !== 'SUPER_ADMIN')) return null;
 
