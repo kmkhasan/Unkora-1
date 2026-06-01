@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Loader2, ShieldCheck } from 'lucide-react';
 import { useAuthStore } from '@/store/auth.store';
 import { authApi } from '@/lib/api/auth';
-import { clearAuthTokens } from '@/lib/api';
+import { clearAuthTokens, saveUserRole } from '@/lib/api';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -40,6 +40,7 @@ export default function AdminLoginPage() {
       }
 
       setUser(loggedIn);
+      saveUserRole(loggedIn.role);
       router.push('/admin');
     } catch (err: unknown) {
       const msg = (err as { response?: { data?: { message?: string | string[] } } })?.response?.data?.message;
