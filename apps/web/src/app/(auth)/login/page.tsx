@@ -41,7 +41,9 @@ function LoginContent() {
 
   const doRedirect = () => {
     const u = useAuthStore.getState().user;
-    if (u?.role === 'SELLER') {
+    if (u?.role === 'ADMIN' || u?.role === 'SUPER_ADMIN') {
+      router.push('/admin');
+    } else if (u?.role === 'SELLER') {
       router.push('/seller/dashboard');
     } else {
       router.push(redirectParam && redirectParam.startsWith('/') ? redirectParam : '/');
@@ -89,13 +91,7 @@ function LoginContent() {
       const apiUser = data.data?.user ?? data.user;
       saveAuthTokens(tokens.accessToken, tokens.refreshToken);
       if (apiUser) {
-        if (apiUser.role === 'ADMIN' || apiUser.role === 'SUPER_ADMIN') {
-          clearAuthTokens();
-          toast.error('Admin পেজে লগইন করুন: /admin/login', { duration: 5000 });
-          setLoggingIn(false);
-          return;
-        }
-        const u = {
+          const u = {
           id: apiUser.id, email: apiUser.email,
           firstName: apiUser.firstName, lastName: apiUser.lastName,
           name: `${apiUser.firstName} ${apiUser.lastName}`.trim(),

@@ -11,6 +11,7 @@ import {
 import { productsApi, categoriesApi, type Product } from '@/lib/api/products';
 import { useLanguage } from '@/lib/i18n/language-context';
 import { useCart } from '@/lib/hooks/use-cart';
+import { WishlistButton } from '@/components/product/wishlist-button';
 
 /* ─────────────────────── static data ─────────────────────────────── */
 
@@ -154,7 +155,7 @@ function MiniCard({ product, lang }: { product: Product; lang: string }) {
       className="group bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col"
     >
       {/* Image — fixed height for uniform cards */}
-      <div className="relative h-44 bg-gray-50 overflow-hidden flex-shrink-0">
+      <div className="relative aspect-[4/3] bg-gray-50 overflow-hidden flex-shrink-0">
         {img ? (
           <Image src={img} alt={product.name} fill
             className="object-cover group-hover:scale-110 transition-transform duration-500"
@@ -168,8 +169,15 @@ function MiniCard({ product, lang }: { product: Product; lang: string }) {
             -{discountPct}%
           </span>
         )}
+        {/* Wishlist */}
+        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <WishlistButton
+            productId={product.id}
+            className="p-1.5 bg-white rounded-full shadow-md hover:bg-red-50 hover:text-red-500 transition-colors"
+          />
+        </div>
         {!inStock && (
-          <div className="absolute inset-0 bg-white/70 flex items-center justify-center">
+          <div className="absolute inset-0 bg-white/70 backdrop-blur-[2px] flex items-center justify-center">
             <span className="bg-gray-800 text-white text-[10px] font-bold px-3 py-1 rounded-full">
               {lang === 'bn' ? 'স্টক নেই' : 'Out of Stock'}
             </span>
@@ -212,7 +220,7 @@ function MiniCard({ product, lang }: { product: Product; lang: string }) {
             <span>{lang === 'bn' ? 'কার্ট' : 'Cart'}</span>
           </button>
           {inStock ? (
-            <Link href={`/checkout?productId=${product.id}&qty=1`} onClick={e => e.stopPropagation()}
+            <Link href={`/checkout?productSlug=${product.slug}&qty=1`} onClick={e => e.stopPropagation()}
               className="flex items-center justify-center gap-1 h-9 bg-orange-500 text-white rounded-lg text-xs font-bold hover:bg-orange-600 active:scale-95 transition-all">
               <Zap className="w-3.5 h-3.5 flex-shrink-0" />
               <span>{lang === 'bn' ? 'এখনই কিনুন' : 'Buy Now'}</span>
@@ -293,7 +301,7 @@ function FlashCard({ product, lang }: { product: Product; lang: string }) {
             <span>{lang === 'bn' ? 'কার্ট' : 'Cart'}</span>
           </button>
           {inStock ? (
-            <Link href={`/checkout?productId=${product.id}&qty=1`} onClick={e => e.stopPropagation()}
+            <Link href={`/checkout?productSlug=${product.slug}&qty=1`} onClick={e => e.stopPropagation()}
               className="flex items-center justify-center gap-1 h-9 bg-orange-500 text-white rounded-lg text-xs font-bold hover:bg-orange-600 active:scale-95 transition-all">
               <Zap className="w-3.5 h-3.5 flex-shrink-0" />
               <span>{lang === 'bn' ? 'এখনই কিনুন' : 'Buy Now'}</span>

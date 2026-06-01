@@ -23,14 +23,14 @@ export function useAuth() {
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       authApi.login(email, password),
     onSuccess: ({ user: u }) => {
-      if (u.role === 'ADMIN' || u.role === 'SUPER_ADMIN') {
-        clearAuthTokens();
-        toast.error('Admin পেজে লগইন করুন: /admin/login', { duration: 5000 });
-        return;
-      }
       setUser(u);
       saveUserRole(u.role);
       void qc.invalidateQueries({ queryKey: ['cart'] });
+
+      if (u.role === 'ADMIN' || u.role === 'SUPER_ADMIN') {
+        router.push('/admin');
+        return;
+      }
 
       const params = new URLSearchParams(window.location.search);
       const redirectTo = params.get('redirect');

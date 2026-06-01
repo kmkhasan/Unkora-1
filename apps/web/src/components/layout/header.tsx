@@ -1266,22 +1266,16 @@ export function Header() {
         <Link
           href="/publish"
           onClick={() => setSidebarOpen(false)}
-          className="sell-border-wrapper mx-4 my-3 flex items-center justify-center gap-2 min-h-[48px] normal-case group relative overflow-hidden"
+          className="mx-4 my-3 flex items-center justify-center gap-2 min-h-[48px] rounded-xl bg-orange-500 hover:bg-orange-600 transition-colors relative overflow-hidden group"
         >
-          <span className="sell-spark sell-spark-1" />
-          <span className="sell-spark sell-spark-2" />
-          <span className="sell-spark sell-spark-3" />
-          <span className="sell-spark sell-spark-4" />
-          <div className="sell-cta-inner w-full justify-center py-3">
-            <span className="relative flex h-2.5 w-2.5 flex-shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-300 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-yellow-400" />
-            </span>
-            <span className="text-white font-black text-sm tracking-wide whitespace-nowrap">Sell Your Book</span>
-            <span className="text-white/40 text-sm">/</span>
-            <span className="sell-bn-text whitespace-nowrap text-sm">বই বিক্রি করুন</span>
-            <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-500 bg-gradient-to-r from-transparent via-white/25 to-transparent rounded-full" />
-          </div>
+          <span className="relative flex h-2.5 w-2.5 flex-shrink-0">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-300 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-yellow-400" />
+          </span>
+          <span className="text-white font-black text-sm tracking-wide whitespace-nowrap">Sell Your Book</span>
+          <span className="text-white/50 text-sm">/</span>
+          <span className="text-white/90 font-bold text-sm whitespace-nowrap">বই বিক্রি করুন</span>
+          <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-500 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
         </Link>
 
         {/* User area */}
