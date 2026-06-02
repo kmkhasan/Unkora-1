@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { SupplierStatus } from '@prisma/client';
+import { SupplierStatus } from '@unkora/database';
 
 export class CreateSupplierDto {
   @IsString()
