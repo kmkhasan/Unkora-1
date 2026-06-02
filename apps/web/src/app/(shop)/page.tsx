@@ -138,7 +138,7 @@ function SectionHeader({ titleBn, titleEn, href, accentColor = '#f97316', lang }
   );
 }
 
-/* ── Compact marketplace card (Rokomari-inspired) ── */
+/* ── Compact marketplace card ── */
 function MiniCard({ product, lang }: { product: Product; lang: string }) {
   const { addItem } = useCart();
   const img = product.images?.[0]?.url;
@@ -152,10 +152,10 @@ function MiniCard({ product, lang }: { product: Product; lang: string }) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col"
+      className="group bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full"
     >
-      {/* Image — fixed height for uniform cards */}
-      <div className="relative aspect-[4/3] bg-gray-50 overflow-hidden flex-shrink-0">
+      {/* Image */}
+      <div className="relative aspect-[4/5] bg-gray-50 overflow-hidden flex-shrink-0">
         {img ? (
           <Image src={img} alt={product.name} fill
             className="object-cover group-hover:scale-110 transition-transform duration-500"
@@ -165,11 +165,11 @@ function MiniCard({ product, lang }: { product: Product; lang: string }) {
           <div className="absolute inset-0 flex items-center justify-center bg-gray-100 text-4xl">📚</div>
         )}
         {hasDiscount && (
-          <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded shadow-sm">
-            -{discountPct}%
+          <span className="absolute top-2 left-2 bg-orange-500 text-white text-[10px] font-black px-2 py-0.5 rounded-md shadow-sm">
+            {discountPct}% OFF
           </span>
         )}
-        {/* Wishlist */}
+        {/* Wishlist on hover */}
         <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
           <WishlistButton
             productId={product.id}
@@ -187,7 +187,10 @@ function MiniCard({ product, lang }: { product: Product; lang: string }) {
 
       {/* Info */}
       <div className="p-2.5 flex flex-col flex-1">
-        <p className="text-[11px] font-bold text-gray-800 line-clamp-2 leading-snug group-hover:text-primary transition-colors flex-1">
+        {product.category && (
+          <span className="text-[9px] font-bold text-orange-500 uppercase tracking-widest mb-0.5">{product.category.name}</span>
+        )}
+        <p className="text-[11px] font-bold text-gray-900 line-clamp-2 leading-snug group-hover:text-primary transition-colors flex-1">
           {product.name}
         </p>
         {product.bookDetail?.author && (
@@ -206,27 +209,37 @@ function MiniCard({ product, lang }: { product: Product; lang: string }) {
           </div>
         )}
         <div className="flex items-baseline gap-1.5 mt-1.5">
-          <span className="text-sm font-black text-primary">৳{salePrice.toLocaleString('en-BD')}</span>
+          <span className="text-sm font-black text-gray-900">৳{salePrice.toLocaleString('en-BD')}</span>
           {hasDiscount && <span className="text-[10px] text-gray-400 line-through">৳{basePrice.toLocaleString('en-BD')}</span>}
         </div>
-        {/* Both buttons always visible */}
-        <div className="grid grid-cols-2 gap-1.5 mt-2">
-          <button
-            onClick={e => { e.preventDefault(); e.stopPropagation(); if (inStock) addItem.mutate({ productId: product.id, quantity: 1, guestData: { name: product.name, price: salePrice, image: img, slug: product.slug } }); }}
-            disabled={!inStock}
-            className={`flex items-center justify-center gap-1 h-9 rounded-lg text-xs font-bold transition-all ${inStock ? 'border border-primary/30 text-primary hover:bg-primary hover:text-white hover:border-primary active:scale-95' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}
-          >
-            <ShoppingCart className="w-3.5 h-3.5 flex-shrink-0" />
-            <span>{lang === 'bn' ? 'কার্ট' : 'Cart'}</span>
-          </button>
+
+        {/* Buttons */}
+        <div className="flex flex-col gap-1.5 mt-2">
+          {/* Row 1: Add to Cart + Wishlist */}
+          <div className="flex gap-1.5">
+            <button
+              onClick={e => { e.preventDefault(); e.stopPropagation(); if (inStock) addItem.mutate({ productId: product.id, quantity: 1, guestData: { name: product.name, price: salePrice, image: img, slug: product.slug } }); }}
+              disabled={!inStock}
+              className={`flex-1 flex items-center justify-center gap-1 h-8 rounded-xl text-[11px] font-bold transition-all ${inStock ? 'bg-gray-900 text-white hover:bg-gray-700 active:scale-95' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}
+            >
+              <ShoppingCart className="w-3 h-3 flex-shrink-0" />
+              <span>{lang === 'bn' ? 'কার্ট' : 'Add to Cart'}</span>
+            </button>
+            <WishlistButton
+              productId={product.id}
+              className="h-8 w-8 flex-shrink-0 rounded-xl border border-gray-200 bg-white flex items-center justify-center hover:border-red-300 hover:text-red-500 hover:bg-red-50 transition-all"
+            />
+          </div>
+
+          {/* Row 2: Buy Now */}
           {inStock ? (
             <Link href={`/checkout?productSlug=${product.slug}&qty=1`} onClick={e => e.stopPropagation()}
-              className="flex items-center justify-center gap-1 h-9 bg-orange-500 text-white rounded-lg text-xs font-bold hover:bg-orange-600 active:scale-95 transition-all">
-              <Zap className="w-3.5 h-3.5 flex-shrink-0" />
+              className="flex items-center justify-center gap-1 h-8 bg-orange-500 text-white rounded-xl text-[11px] font-bold hover:bg-orange-600 active:scale-95 transition-all">
+              <Zap className="w-3 h-3 flex-shrink-0" />
               <span>{lang === 'bn' ? 'এখনই কিনুন' : 'Buy Now'}</span>
             </Link>
           ) : (
-            <div className="flex items-center justify-center h-9 rounded-lg bg-gray-100 text-gray-400 text-xs font-bold">
+            <div className="flex items-center justify-center h-8 rounded-xl bg-gray-100 text-gray-400 text-[11px] font-bold">
               {lang === 'bn' ? 'নেই' : 'N/A'}
             </div>
           )}
