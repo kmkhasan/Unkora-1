@@ -223,7 +223,7 @@ function MiniCard({ product, lang }: { product: Product; lang: string }) {
               className={`flex-1 flex items-center justify-center gap-1 h-8 rounded-xl text-[11px] font-bold transition-all ${inStock ? 'bg-gray-900 text-white hover:bg-gray-700 active:scale-95' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}
             >
               <ShoppingCart className="w-3 h-3 flex-shrink-0" />
-              <span>{lang === 'bn' ? 'কার্ট' : 'Add to Cart'}</span>
+              <span>{lang === 'bn' ? 'কার্টে যোগ করুন' : 'Add to Cart'}</span>
             </button>
             <WishlistButton
               productId={product.id}
@@ -277,17 +277,21 @@ function FlashCard({ product, lang }: { product: Product; lang: string }) {
   if (imgErr || !img) return null;
   return (
     <Link href={`/products/${product.slug}`}
-      className="flex-shrink-0 w-[165px] group bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
-      <div className="relative h-[200px] bg-gray-50 overflow-hidden flex-shrink-0">
+      className="flex-shrink-0 w-[190px] group bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
+      <div className="relative aspect-[4/5] bg-gray-50 overflow-hidden flex-shrink-0">
         <Image src={img} alt={product.name} fill
           className="object-cover group-hover:scale-110 transition-transform duration-500"
           unoptimized={img.includes('unsplash') || img.includes('picsum')}
-          sizes="165px" onError={() => setImgErr(true)} />
+          sizes="190px" onError={() => setImgErr(true)} />
         {hasDiscount && (
-          <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded shadow">-{discount}%</span>
+          <span className="absolute top-2 left-2 bg-orange-500 text-white text-[10px] font-black px-2 py-0.5 rounded-md shadow-sm">{discount}% OFF</span>
         )}
+        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <WishlistButton productId={product.id}
+            className="p-1.5 bg-white rounded-full shadow-md hover:bg-red-50 hover:text-red-500 transition-colors" />
+        </div>
         {!inStock && (
-          <div className="absolute inset-0 bg-white/70 flex items-center justify-center">
+          <div className="absolute inset-0 bg-white/70 backdrop-blur-[2px] flex items-center justify-center">
             <span className="bg-gray-800 text-white text-[10px] font-bold px-3 py-1 rounded-full">
               {lang === 'bn' ? 'স্টক নেই' : 'Out of Stock'}
             </span>
@@ -295,32 +299,39 @@ function FlashCard({ product, lang }: { product: Product; lang: string }) {
         )}
       </div>
       <div className="p-2.5 flex flex-col flex-1">
-        <p className="text-[11px] font-bold text-gray-800 line-clamp-2 leading-snug group-hover:text-primary transition-colors flex-1">
+        {product.category && (
+          <span className="text-[9px] font-bold text-orange-500 uppercase tracking-widest mb-0.5">{product.category.name}</span>
+        )}
+        <p className="text-[11px] font-bold text-gray-900 line-clamp-2 leading-snug group-hover:text-primary transition-colors flex-1">
           {product.name}
         </p>
         {product.bookDetail?.author && (
           <p className="text-[10px] text-gray-400 truncate mt-0.5">{product.bookDetail.author}</p>
         )}
         <div className="flex items-baseline gap-1.5 mt-1.5">
-          <span className="text-sm font-black text-red-600">৳{salePrice.toLocaleString('en-BD')}</span>
+          <span className="text-sm font-black text-gray-900">৳{salePrice.toLocaleString('en-BD')}</span>
           {hasDiscount && <span className="text-[10px] text-gray-400 line-through">৳{basePrice.toLocaleString('en-BD')}</span>}
         </div>
-        <div className="grid grid-cols-2 gap-1.5 mt-2">
-          <button
-            onClick={e => { e.preventDefault(); e.stopPropagation(); if (inStock) addItem.mutate({ productId: product.id, quantity: 1, guestData: { name: product.name, price: salePrice, image: img, slug: product.slug } }); }}
-            disabled={!inStock}
-            className={`flex items-center justify-center gap-1 h-9 rounded-lg text-xs font-bold transition-all ${inStock ? 'border border-primary/30 text-primary hover:bg-primary hover:text-white hover:border-primary active:scale-95' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}>
-            <ShoppingCart className="w-3.5 h-3.5 flex-shrink-0" />
-            <span>{lang === 'bn' ? 'কার্ট' : 'Cart'}</span>
-          </button>
+        <div className="flex flex-col gap-1.5 mt-2">
+          <div className="flex gap-1.5">
+            <button
+              onClick={e => { e.preventDefault(); e.stopPropagation(); if (inStock) addItem.mutate({ productId: product.id, quantity: 1, guestData: { name: product.name, price: salePrice, image: img, slug: product.slug } }); }}
+              disabled={!inStock}
+              className={`flex-1 flex items-center justify-center gap-1 h-8 rounded-xl text-[11px] font-bold transition-all ${inStock ? 'bg-gray-900 text-white hover:bg-gray-700 active:scale-95' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}>
+              <ShoppingCart className="w-3 h-3 flex-shrink-0" />
+              <span>{lang === 'bn' ? 'কার্টে যোগ' : 'Add to Cart'}</span>
+            </button>
+            <WishlistButton productId={product.id}
+              className="h-8 w-8 flex-shrink-0 rounded-xl border border-gray-200 bg-white flex items-center justify-center hover:border-red-300 hover:text-red-500 hover:bg-red-50 transition-all" />
+          </div>
           {inStock ? (
             <Link href={`/checkout?productSlug=${product.slug}&qty=1`} onClick={e => e.stopPropagation()}
-              className="flex items-center justify-center gap-1 h-9 bg-orange-500 text-white rounded-lg text-xs font-bold hover:bg-orange-600 active:scale-95 transition-all">
-              <Zap className="w-3.5 h-3.5 flex-shrink-0" />
+              className="flex items-center justify-center gap-1 h-8 bg-orange-500 text-white rounded-xl text-[11px] font-bold hover:bg-orange-600 active:scale-95 transition-all">
+              <Zap className="w-3 h-3 flex-shrink-0" />
               <span>{lang === 'bn' ? 'এখনই কিনুন' : 'Buy Now'}</span>
             </Link>
           ) : (
-            <div className="flex items-center justify-center h-9 rounded-lg bg-gray-100 text-gray-400 text-xs font-bold">
+            <div className="flex items-center justify-center h-8 rounded-xl bg-gray-100 text-gray-400 text-[11px] font-bold">
               {lang === 'bn' ? 'নেই' : 'N/A'}
             </div>
           )}
@@ -422,6 +433,16 @@ export default function HomePage() {
   const shelfBooks = shelfData?.data ?? [];
   const { data: organicData } = useQuery({ queryKey: ['products', 'organic'], queryFn: () => productsApi.getAll({ categorySlug: 'organic-foods', limit: 6 } as Parameters<typeof productsApi.getAll>[0]) });
   const organicProducts = organicData?.data ?? [];
+  const { data: babyData } = useQuery({ queryKey: ['products', 'baby-products'], queryFn: () => productsApi.getAll({ categorySlug: 'baby-products', limit: 6 } as Parameters<typeof productsApi.getAll>[0]) });
+  const babyProducts = babyData?.data ?? [];
+  const { data: leatherData } = useQuery({ queryKey: ['products', 'leather-products'], queryFn: () => productsApi.getAll({ categorySlug: 'leather-products', limit: 6 } as Parameters<typeof productsApi.getAll>[0]) });
+  const leatherProducts = leatherData?.data ?? [];
+  const { data: handicraftData } = useQuery({ queryKey: ['products', 'handicrafts'], queryFn: () => productsApi.getAll({ categorySlug: 'handicrafts', limit: 6 } as Parameters<typeof productsApi.getAll>[0]) });
+  const handicraftProducts = handicraftData?.data ?? [];
+  const { data: electronicsData } = useQuery({ queryKey: ['products', 'electronics'], queryFn: () => productsApi.getAll({ categorySlug: 'electronics', limit: 6 } as Parameters<typeof productsApi.getAll>[0]) });
+  const electronicsProducts = electronicsData?.data ?? [];
+  const { data: dailyNeedsData } = useQuery({ queryKey: ['products', 'daily-needs'], queryFn: () => productsApi.getAll({ categorySlug: 'daily-needs', limit: 6 } as Parameters<typeof productsApi.getAll>[0]) });
+  const dailyNeedsProducts = dailyNeedsData?.data ?? [];
   const { data: flashData, isError: flashError } = useQuery({ queryKey: ['products', 'flash-deals'], queryFn: () => productsApi.getAll({ limit: 20 } as Parameters<typeof productsApi.getAll>[0]) });
   const flashProducts = (flashData?.data ?? []).filter(p => p.salePrice && Number(p.salePrice) < Number(p.basePrice) && p.images?.[0]?.url).slice(0, 12);
 
@@ -629,9 +650,9 @@ export default function HomePage() {
           </div>
           <div ref={shelfRef} className="flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden scroll-smooth">
             {shelfBooks.length > 0 ? shelfBooks.map(p => (
-              <div key={p.id} className="flex-shrink-0 w-[150px]"><MiniCard product={p} lang={lang} /></div>
+              <div key={p.id} className="flex-shrink-0 w-[175px]"><MiniCard product={p} lang={lang} /></div>
             )) : Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="flex-shrink-0 w-[150px]"><SkeletonCard /></div>
+              <div key={i} className="flex-shrink-0 w-[175px]"><SkeletonCard /></div>
             ))}
           </div>
           <div className="mt-3 pt-3 border-t border-gray-100 flex justify-center">
@@ -751,6 +772,76 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          BABY PRODUCTS
+      ═══════════════════════════════════════════════════════════════ */}
+      {babyProducts.length > 0 && (
+        <section className="py-3 px-3 md:px-4">
+          <div className="max-w-7xl mx-auto bg-white rounded-xl p-4">
+            <SectionHeader titleBn="শিশু পণ্য" titleEn="Baby Products" href="/categories/baby-products" accentColor="#ec4899" lang={lang} />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {babyProducts.map(p => <MiniCard key={p.id} product={p} lang={lang} />)}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ═══════════════════════════════════════════════════════════════
+          LEATHER PRODUCTS GRID
+      ═══════════════════════════════════════════════════════════════ */}
+      {leatherProducts.length > 0 && (
+        <section className="py-3 px-3 md:px-4">
+          <div className="max-w-7xl mx-auto bg-white rounded-xl p-4">
+            <SectionHeader titleBn="চামড়া পণ্য" titleEn="Leather Products" href="/categories/leather-products" accentColor="#b45309" lang={lang} />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {leatherProducts.map(p => <MiniCard key={p.id} product={p} lang={lang} />)}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ═══════════════════════════════════════════════════════════════
+          HANDICRAFTS
+      ═══════════════════════════════════════════════════════════════ */}
+      {handicraftProducts.length > 0 && (
+        <section className="py-3 px-3 md:px-4">
+          <div className="max-w-7xl mx-auto bg-white rounded-xl p-4">
+            <SectionHeader titleBn="হস্তশিল্প" titleEn="Handicrafts" href="/categories/handicrafts" accentColor="#d97706" lang={lang} />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {handicraftProducts.map(p => <MiniCard key={p.id} product={p} lang={lang} />)}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ═══════════════════════════════════════════════════════════════
+          ELECTRONICS
+      ═══════════════════════════════════════════════════════════════ */}
+      {electronicsProducts.length > 0 && (
+        <section className="py-3 px-3 md:px-4">
+          <div className="max-w-7xl mx-auto bg-white rounded-xl p-4">
+            <SectionHeader titleBn="ইলেকট্রনিক্স" titleEn="Electronics" href="/categories/electronics" accentColor="#2563eb" lang={lang} />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {electronicsProducts.map(p => <MiniCard key={p.id} product={p} lang={lang} />)}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ═══════════════════════════════════════════════════════════════
+          DAILY NEEDS
+      ═══════════════════════════════════════════════════════════════ */}
+      {dailyNeedsProducts.length > 0 && (
+        <section className="py-3 px-3 md:px-4">
+          <div className="max-w-7xl mx-auto bg-white rounded-xl p-4">
+            <SectionHeader titleBn="দৈনন্দিন প্রয়োজন" titleEn="Daily Needs" href="/categories/daily-needs" accentColor="#16a34a" lang={lang} />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {dailyNeedsProducts.map(p => <MiniCard key={p.id} product={p} lang={lang} />)}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ═══════════════════════════════════════════════════════════════
           RANKINGS — 3 column
