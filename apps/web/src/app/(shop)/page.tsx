@@ -116,27 +116,64 @@ function useCountdown(target: Date) {
 
 type PromoBannerItem = { id: string; imageUrl: string; linkUrl?: string; title: string };
 
-function PromoBannerRow({ banners }: { banners: PromoBannerItem[] }) {
-  if (banners.length === 0) return null;
+/* Static fallback banners used when API returns nothing */
+const FALLBACK_BANNERS: PromoBannerItem[][] = [
+  [
+    { id: 'f1', title: 'বই উৎসব — ৫০% ছাড়', linkUrl: '/books', imageUrl: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop' },
+    { id: 'f2', title: 'অর্গানিক পণ্য সংগ্রহ', linkUrl: '/categories/organic-foods', imageUrl: 'https://images.unsplash.com/photo-1556909114-4d4a51b2f17e?q=80&w=800&auto=format&fit=crop' },
+    { id: 'f3', title: 'ফ্রি শিপিং — ৫০০+ অর্ডারে', linkUrl: '/products', imageUrl: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=800&auto=format&fit=crop' },
+  ],
+  [
+    { id: 'f4', title: 'লেদার কালেকশন', linkUrl: '/categories/leather-products', imageUrl: 'https://images.unsplash.com/photo-1627123424574-724758594e93?q=80&w=800&auto=format&fit=crop' },
+    { id: 'f5', title: 'ইসলামিক বই সংগ্রহ', linkUrl: '/books?genre=Islamic', imageUrl: 'https://images.unsplash.com/photo-1585036156171-3839efc229b7?q=80&w=800&auto=format&fit=crop' },
+    { id: 'f6', title: 'শিশু পণ্য — বিশেষ অফার', linkUrl: '/categories/baby-products', imageUrl: 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?q=80&w=800&auto=format&fit=crop' },
+  ],
+  [
+    { id: 'f7', title: 'হস্তশিল্প সংগ্রহ', linkUrl: '/categories/handicrafts', imageUrl: 'https://images.unsplash.com/photo-1464349153735-7db50ed83c84?q=80&w=800&auto=format&fit=crop' },
+    { id: 'f8', title: 'নতুন বই এসেছে', linkUrl: '/products?sortBy=createdAt&sortOrder=desc', imageUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop' },
+    { id: 'f9', title: 'ইলেকট্রনিক্স অফার', linkUrl: '/categories/electronics', imageUrl: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?q=80&w=800&auto=format&fit=crop' },
+  ],
+  [
+    { id: 'f10', title: 'রমজান স্পেশাল', linkUrl: '/books?genre=Islamic', imageUrl: 'https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?q=80&w=800&auto=format&fit=crop' },
+    { id: 'f11', title: 'দৈনন্দিন প্রয়োজনীয় পণ্য', linkUrl: '/categories/daily-needs', imageUrl: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?q=80&w=800&auto=format&fit=crop' },
+    { id: 'f12', title: 'বেস্ট সেলার বই', linkUrl: '/products', imageUrl: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=800&auto=format&fit=crop' },
+  ],
+];
+
+function PromoBannerRow({ banners, fallback }: { banners: PromoBannerItem[]; fallback?: PromoBannerItem[] }) {
+  const items = banners.length > 0 ? banners : (fallback ?? []);
+  if (items.length === 0) return null;
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      {items.slice(0, 3).map(b =>
+        b.linkUrl ? (
+          <Link key={b.id} href={b.linkUrl}
+            className="relative rounded-xl overflow-hidden h-28 md:h-32 block group hover:scale-[1.02] transition-all shadow-sm">
+            <Image src={b.imageUrl} alt={b.title} fill className="object-cover group-hover:scale-110 transition-transform duration-500" unoptimized />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent group-hover:from-black/40 transition-all" />
+            <span className="absolute bottom-2 left-3 text-white font-bold text-xs drop-shadow-md">{b.title}</span>
+          </Link>
+        ) : (
+          <div key={b.id} className="relative rounded-xl overflow-hidden h-28 md:h-32">
+            <Image src={b.imageUrl} alt={b.title} fill className="object-cover" unoptimized />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+            <span className="absolute bottom-2 left-3 text-white font-bold text-xs drop-shadow-md">{b.title}</span>
+          </div>
+        )
+      )}
+    </div>
+  );
+}
+
+/* 4-row × 3-col consolidated promo grid */
+function PromoBannerGrid({ rows }: { rows: [PromoBannerItem[], PromoBannerItem[], PromoBannerItem[], PromoBannerItem[]] }) {
   return (
     <section className="py-3 px-3 md:px-4">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-3">
-        {banners.slice(0, 3).map(b =>
-          b.linkUrl ? (
-            <Link key={b.id} href={b.linkUrl}
-              className="relative rounded-xl overflow-hidden h-28 md:h-32 block group hover:scale-[1.02] transition-all shadow-sm flex-shrink-0">
-              <Image src={b.imageUrl} alt={b.title} fill className="object-cover group-hover:scale-110 transition-transform duration-500" unoptimized />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent group-hover:from-black/30 transition-all" />
-              <span className="absolute bottom-2 left-3 text-white font-bold text-xs drop-shadow">{b.title}</span>
-            </Link>
-          ) : (
-            <div key={b.id} className="relative rounded-xl overflow-hidden h-28 md:h-32">
-              <Image src={b.imageUrl} alt={b.title} fill className="object-cover" unoptimized />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-              <span className="absolute bottom-2 left-3 text-white font-bold text-xs drop-shadow">{b.title}</span>
-            </div>
-          )
-        )}
+      <div className="max-w-7xl mx-auto bg-white rounded-xl p-4 space-y-3">
+        <PromoBannerRow banners={rows[0]} fallback={FALLBACK_BANNERS[0]} />
+        <PromoBannerRow banners={rows[1]} fallback={FALLBACK_BANNERS[1]} />
+        <PromoBannerRow banners={rows[2]} fallback={FALLBACK_BANNERS[2]} />
+        <PromoBannerRow banners={rows[3]} fallback={FALLBACK_BANNERS[3]} />
       </div>
     </section>
   );
@@ -625,8 +662,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* PROMO ROW 1 — after categories */}
-      <PromoBannerRow banners={promo1} />
+      {/* ═══════════════════════════════════════════════════════════════
+          4-ROW PROMO BANNER GRID — 4 rows × 3 ads each
+      ═══════════════════════════════════════════════════════════════ */}
+      <PromoBannerGrid rows={[promo1, promo2, promo3, promo4]} />
 
       {/* ═══════════════════════════════════════════════════════════════
           FLASH DEALS
@@ -673,8 +712,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* PROMO ROW 2 — after flash deals */}
-      <PromoBannerRow banners={promo2} />
 
       {/* ═══════════════════════════════════════════════════════════════
           BOOK WORLD — tabbed shelf
@@ -716,8 +753,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* PROMO ROW 3 — after book world */}
-      <PromoBannerRow banners={promo3} />
 
       {/* ═══════════════════════════════════════════════════════════════
           NEW ARRIVALS — 6-column grid
@@ -734,8 +769,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* PROMO ROW 4 — after new arrivals */}
-      <PromoBannerRow banners={promo4} />
 
       {/* ═══════════════════════════════════════════════════════════════
           BEST SELLERS — tabbed 6-column grid
