@@ -206,7 +206,6 @@ const NAV: NavItem[] = [
     ],
   },
   {
->>>>>>> 2b68347 (feat: reorganize admin sidebar with enterprise IA + section dividers)
     label: 'Configuration', icon: Settings,
     children: [
       { href: '/admin/localization',       label: 'Multi-Currency/Lang', icon: Globe },

@@ -71,6 +71,13 @@ export class AdminController {
     return this.adminService.deleteUser(id);
   }
 
+  @Patch('users/:id/credentials')
+  @Roles('SUPER_ADMIN')
+  @ApiOperation({ summary: 'Super Admin: reset another admin/user email or password' })
+  resetUserCredentials(@Param('id') id: string, @Body() dto: { email?: string; password?: string }) {
+    return this.adminService.resetUserCredentials(id, dto);
+  }
+
   @Get('analytics/orders-by-status')
   @ApiOperation({ summary: 'Get count of orders grouped by status' })
   getOrdersByStatus() {

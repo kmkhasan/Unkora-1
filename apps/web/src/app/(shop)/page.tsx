@@ -469,6 +469,16 @@ export default function HomePage() {
   const shelfBooks = shelfData?.data ?? [];
   const { data: organicData } = useQuery({ queryKey: ['products', 'organic'], queryFn: () => productsApi.getAll({ categorySlug: 'organic-foods', limit: 6 } as Parameters<typeof productsApi.getAll>[0]) });
   const organicProducts = organicData?.data ?? [];
+  const { data: babyData } = useQuery({ queryKey: ['products', 'baby'], queryFn: () => productsApi.getAll({ categorySlug: 'baby-products', limit: 12 } as Parameters<typeof productsApi.getAll>[0]) });
+  const babyProducts = babyData?.data ?? [];
+  const { data: leatherData } = useQuery({ queryKey: ['products', 'leather'], queryFn: () => productsApi.getAll({ categorySlug: 'leather-products', limit: 12 } as Parameters<typeof productsApi.getAll>[0]) });
+  const leatherProducts = leatherData?.data ?? [];
+  const { data: handicraftData } = useQuery({ queryKey: ['products', 'handicraft'], queryFn: () => productsApi.getAll({ categorySlug: 'handicrafts', limit: 12 } as Parameters<typeof productsApi.getAll>[0]) });
+  const handicraftProducts = handicraftData?.data ?? [];
+  const { data: electronicsData } = useQuery({ queryKey: ['products', 'electronics'], queryFn: () => productsApi.getAll({ categorySlug: 'electronics', limit: 12 } as Parameters<typeof productsApi.getAll>[0]) });
+  const electronicsProducts = electronicsData?.data ?? [];
+  const { data: dailyNeedsData } = useQuery({ queryKey: ['products', 'daily-needs'], queryFn: () => productsApi.getAll({ categorySlug: 'daily-needs', limit: 12 } as Parameters<typeof productsApi.getAll>[0]) });
+  const dailyNeedsProducts = dailyNeedsData?.data ?? [];
   const { data: flashData, isError: flashError } = useQuery({ queryKey: ['products', 'flash-deals'], queryFn: () => productsApi.getAll({ limit: 20 } as Parameters<typeof productsApi.getAll>[0]) });
   const flashProducts = (flashData?.data ?? []).filter(p => p.salePrice && Number(p.salePrice) < Number(p.basePrice) && p.images?.[0]?.url).slice(0, 12);
 
@@ -700,7 +710,7 @@ export default function HomePage() {
             {flashProducts.length > 0
               ? flashProducts.map(p => <FlashCard key={p.id} product={p} lang={lang} />)
               : Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="flex-shrink-0 w-[165px] animate-pulse">
+                <div key={i} className="flex-shrink-0 w-[190px] animate-pulse">
                   <div className="w-full h-[200px] rounded-2xl bg-gray-200 mb-2" />
                   <div className="h-3 bg-gray-200 rounded mb-1 mx-2" />
                   <div className="h-3 bg-gray-200 rounded w-2/3 mx-2 mb-2" />
@@ -740,9 +750,9 @@ export default function HomePage() {
           </div>
           <div ref={shelfRef} className="flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden scroll-smooth">
             {shelfBooks.length > 0 ? shelfBooks.map(p => (
-              <div key={p.id} className="flex-shrink-0 w-[150px]"><MiniCard product={p} lang={lang} /></div>
+              <div key={p.id} className="flex-shrink-0 w-[175px]"><MiniCard product={p} lang={lang} /></div>
             )) : Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="flex-shrink-0 w-[150px]"><SkeletonCard /></div>
+              <div key={i} className="flex-shrink-0 w-[175px]"><SkeletonCard /></div>
             ))}
           </div>
           <div className="mt-3 pt-3 border-t border-gray-100 flex justify-center">
@@ -921,6 +931,76 @@ export default function HomePage() {
             <SectionHeader titleBn="অর্গানিক পণ্য" titleEn="Organic Products" href="/categories/organic-foods" accentColor="#16a34a" lang={lang} />
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
               {organicProducts.map(p => <MiniCard key={p.id} product={p} lang={lang} />)}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ═══════════════════════════════════════════════════════════════
+          BABY PRODUCTS
+      ═══════════════════════════════════════════════════════════════ */}
+      {babyProducts.length > 0 && (
+        <section className="py-3 px-3 md:px-4">
+          <div className="max-w-7xl mx-auto bg-gradient-to-r from-pink-50 to-rose-50 rounded-xl p-4 border border-pink-100">
+            <SectionHeader titleBn="👶 শিশু পণ্য" titleEn="👶 Baby Products" href="/products?categorySlug=baby-products" accentColor="#ec4899" lang={lang} />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {babyProducts.slice(0, 12).map(p => <MiniCard key={p.id} product={p} lang={lang} />)}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ═══════════════════════════════════════════════════════════════
+          LEATHER PRODUCTS GRID
+      ═══════════════════════════════════════════════════════════════ */}
+      {leatherProducts.length > 0 && (
+        <section className="py-3 px-3 md:px-4">
+          <div className="max-w-7xl mx-auto bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 border border-amber-100">
+            <SectionHeader titleBn="👜 চামড়া পণ্য" titleEn="👜 Leather Products" href="/products?categorySlug=leather-products" accentColor="#b45309" lang={lang} />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {leatherProducts.slice(0, 12).map(p => <MiniCard key={p.id} product={p} lang={lang} />)}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ═══════════════════════════════════════════════════════════════
+          HANDICRAFTS
+      ═══════════════════════════════════════════════════════════════ */}
+      {handicraftProducts.length > 0 && (
+        <section className="py-3 px-3 md:px-4">
+          <div className="max-w-7xl mx-auto bg-gradient-to-r from-violet-50 to-purple-50 rounded-xl p-4 border border-violet-100">
+            <SectionHeader titleBn="🎨 হস্তশিল্প" titleEn="🎨 Handicrafts" href="/products?categorySlug=handicrafts" accentColor="#7c3aed" lang={lang} />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {handicraftProducts.slice(0, 12).map(p => <MiniCard key={p.id} product={p} lang={lang} />)}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ═══════════════════════════════════════════════════════════════
+          ELECTRONICS
+      ═══════════════════════════════════════════════════════════════ */}
+      {electronicsProducts.length > 0 && (
+        <section className="py-3 px-3 md:px-4">
+          <div className="max-w-7xl mx-auto bg-gradient-to-r from-cyan-50 to-sky-50 rounded-xl p-4 border border-cyan-100">
+            <SectionHeader titleBn="⚡ ইলেকট্রনিক্স" titleEn="⚡ Electronics" href="/products?categorySlug=electronics" accentColor="#0e7490" lang={lang} />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {electronicsProducts.slice(0, 12).map(p => <MiniCard key={p.id} product={p} lang={lang} />)}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ═══════════════════════════════════════════════════════════════
+          DAILY NEEDS
+      ═══════════════════════════════════════════════════════════════ */}
+      {dailyNeedsProducts.length > 0 && (
+        <section className="py-3 px-3 md:px-4">
+          <div className="max-w-7xl mx-auto bg-gradient-to-r from-teal-50 to-emerald-50 rounded-xl p-4 border border-teal-100">
+            <SectionHeader titleBn="🛒 দৈনন্দিন প্রয়োজন" titleEn="🛒 Daily Needs" href="/products?categorySlug=daily-needs" accentColor="#0d9488" lang={lang} />
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {dailyNeedsProducts.slice(0, 12).map(p => <MiniCard key={p.id} product={p} lang={lang} />)}
             </div>
           </div>
         </section>

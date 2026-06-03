@@ -187,6 +187,23 @@ export class AdminService {
     });
   }
 
+  async resetUserCredentials(id: string, dto: { email?: string; password?: string }) {
+    const data: Record<string, unknown> = {};
+    if (dto.email) {
+      const existing = await this.prisma.user.findFirst({ where: { email: dto.email, NOT: { id } } });
+      if (existing) throw new ConflictException('Email already in use');
+      data['email'] = dto.email;
+    }
+    if (dto.password) {
+      data['passwordHash'] = await argon2.hash(dto.password);
+    }
+    return this.prisma.user.update({
+      where: { id },
+      data,
+      select: { id: true, email: true, role: true, status: true },
+    });
+  }
+
   async deleteUser(id: string) {
     return this.prisma.user.update({
       where: { id },
