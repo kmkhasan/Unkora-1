@@ -12,6 +12,8 @@ import {
   DollarSign, RefreshCw, Bell as BellIcon, Mail, Search, Wallet,
   Users2, PieChart, UserCog, Palette, Sparkles, Bot, Library, ScrollText, Cpu,
   ClipboardList, BookMarked, LayoutList, LifeBuoy, Maximize2, Puzzle, MapPin, Map, Rocket, Megaphone,
+  ShoppingCart, Instagram, Youtube, MessageCircle as WhatsApp, Radio, Lock, ClipboardCheck, Image,
+  TrendingDown, Calculator, BadgePercent, Wifi,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth.store';
 import { authApi } from '@/lib/api/auth';
@@ -21,34 +23,44 @@ import { useQueryClient } from '@tanstack/react-query';
 /* ─── Nav tree structure ─────────────────────────────────────── */
 type NavLeaf = { href: string; label: string; icon: React.ElementType; exact?: boolean };
 type NavParent = { label: string; icon: React.ElementType; children: NavLeaf[] };
-type NavItem = NavLeaf | NavParent;
+type NavSection = { section: string };
+type NavItem = NavLeaf | NavParent | NavSection;
 
-function isParent(item: NavItem): item is NavParent {
-  return 'children' in item;
-}
+function isParent(item: NavItem): item is NavParent { return 'children' in item; }
+function isSection(item: NavItem): item is NavSection { return 'section' in item; }
 
 const NAV: NavItem[] = [
-  { href: '/admin',   label: 'Dashboard', icon: LayoutDashboard, exact: true },
-  { href: '/admin/reports', label: 'Reports', icon: BarChart3 },
-  { href: '/admin/categories', label: 'Categories', icon: Tag },
-  { href: '/admin/categories/mega-menu', label: 'Mega Menu', icon: LayoutList },
+  { href: '/admin',         label: 'Dashboard', icon: LayoutDashboard, exact: true },
+  { href: '/admin/reports', label: 'Reports',   icon: BarChart3 },
+
+  /* ── CATALOGUE & STOCK ── */
+  { section: 'Catalogue & Stock' },
   {
-    label: 'Products', icon: Package,
+    label: 'Catalogue', icon: Package,
     children: [
-      { href: '/admin/products',                      label: 'All Products',    icon: Package },
-      { href: '/admin/products/new',                 label: 'Add New Product', icon: Plus },
-      { href: '/admin/inventory',                    label: 'Inventory',       icon: Archive },
-      { href: '/admin/inventory/stocks',             label: 'Stock Levels',    icon: Archive },
-      { href: '/admin/inventory/suppliers',          label: 'Suppliers',       icon: Store },
-      { href: '/admin/inventory/warehouses',         label: 'Warehouses',      icon: Layers },
-      { href: '/admin/inventory/purchase-orders',    label: 'Purchase Orders', icon: ClipboardList },
-      { href: '/admin/inventory/movements',          label: 'Stock Movements', icon: RefreshCw },
-      { href: '/admin/inventory/adjustments',        label: 'Adjustments',     icon: Sliders },
-      { href: '/admin/inventory/alerts',             label: 'Low Stock Alerts',icon: ShieldAlert },
-      { href: '/admin/products/setup',               label: 'Product Setup',   icon: Sliders },
-      { href: '/admin/auctions',                     label: 'Auctions',        icon: Gavel },
+      { href: '/admin/categories',           label: 'Categories',      icon: Tag },
+      { href: '/admin/categories/mega-menu', label: 'Mega Menu',       icon: LayoutList },
+      { href: '/admin/products',             label: 'All Products',    icon: Package },
+      { href: '/admin/products/new',         label: 'Add Product',     icon: Plus },
+      { href: '/admin/products/setup',       label: 'Product Setup',   icon: Sliders },
+      { href: '/admin/auctions',             label: 'Auctions',        icon: Gavel },
     ],
   },
+  {
+    label: 'Inventory', icon: Archive,
+    children: [
+      { href: '/admin/inventory',                 label: 'Overview',        icon: Archive },
+      { href: '/admin/inventory/stocks',          label: 'Stock Levels',    icon: Archive },
+      { href: '/admin/inventory/suppliers',       label: 'Suppliers',       icon: Store },
+      { href: '/admin/inventory/purchase-orders', label: 'Purchase Orders', icon: ClipboardList },
+      { href: '/admin/inventory/movements',       label: 'Movements',       icon: RefreshCw },
+      { href: '/admin/inventory/adjustments',     label: 'Adjustments',     icon: Sliders },
+      { href: '/admin/inventory/alerts',          label: 'Low Stock Alerts',icon: ShieldAlert },
+    ],
+  },
+
+  /* ── COMMERCE ── */
+  { section: 'Commerce' },
   {
     label: 'Sales', icon: ShoppingBag,
     children: [
@@ -56,110 +68,151 @@ const NAV: NavItem[] = [
       { href: '/admin/shipments',    label: 'Shipments',       icon: Truck },
       { href: '/admin/coupons',      label: 'Coupons',         icon: Ticket },
       { href: '/admin/promotions',   label: 'Promotions',      icon: Zap },
-      { href: '/admin/refunds',      label: 'Refunds',         icon: RotateCcw },
       { href: '/admin/flash-deals',  label: 'Flash Deals',     icon: Zap },
-      { href: '/admin/wholesale',    label: 'Wholesale',       icon: Layers },
       { href: '/admin/gift-cards',   label: 'Gift Cards',      icon: CreditCard },
-      { href: '/admin/fraud',        label: 'Fraud Detection', icon: ShieldAlert },
       { href: '/admin/preorders',    label: 'Preorders',       icon: ClipboardList },
-      { href: '/admin/preorders/configurations', label: 'Preorder Config', icon: Sliders },
-      { href: '/admin/preorders/orders',         label: 'Preorder Orders', icon: ShoppingBag },
-    ],
-  },
-  {
-    label: 'Operations', icon: Monitor,
-    children: [
-      { href: '/admin/pos',                 label: 'POS Terminal',       icon: Monitor },
-      { href: '/admin/sellers',             label: 'Sellers',            icon: Store },
-      { href: '/admin/courier',             label: 'Courier',            icon: Truck },
-      { href: '/admin/courier/setup',       label: 'Courier Setup',      icon: Settings },
-      { href: '/admin/cod-reconciliation',  label: 'COD Reconciliation', icon: DollarSign },
-      { href: '/admin/returns',             label: 'Returns',            icon: RefreshCw },
-    ],
-  },
-  {
-    label: 'Delivery', icon: Bike,
-    children: [
-      { href: '/admin/delivery-boys',  label: 'Delivery Boys',  icon: User },
-      { href: '/admin/pickup-points',  label: 'Pickup Points',  icon: MapPin },
-      { href: '/admin/shipping-zones', label: 'Shipping Zones', icon: Map },
-      { href: '/admin/shiprocket',     label: 'Shiprocket',     icon: Rocket },
-    ],
-  },
-  {
-    label: 'Community', icon: Users,
-    children: [
-      { href: '/admin/users',            label: 'Users',             icon: Users },
-      { href: '/admin/reviews',          label: 'Reviews',           icon: MessageSquare },
-      { href: '/admin/blog',             label: 'Blog',              icon: FileText },
-      { href: '/admin/book-submissions', label: 'Book Submissions',  icon: BookMarked },
-      { href: '/admin/classifieds',      label: 'Classifieds',       icon: LayoutList },
-      { href: '/admin/support',          label: 'Support Tickets',   icon: LifeBuoy },
-      { href: '/admin/loyalty',          label: 'Club Points',       icon: Star },
-      { href: '/admin/referrals',        label: 'Referrals',         icon: Share2 },
-    ],
-  },
-  {
-    label: 'Marketing', icon: TrendingUp,
-    children: [
-      { href: '/admin/analytics',                        label: 'Analytics Hub',      icon: TrendingUp },
-      { href: '/admin/analytics/meta-pixel',             label: 'Meta Pixel',         icon: Target },
-      { href: '/admin/analytics/google-analytics',       label: 'Google Analytics',   icon: BarChart3 },
-      { href: '/admin/analytics/google-tag-manager',     label: 'Tag Manager',        icon: Tag },
-      { href: '/admin/analytics/google-search-console',  label: 'Search Console',     icon: Globe },
-      { href: '/admin/sms',                              label: 'SMS',                icon: MessageCircle },
-      { href: '/admin/notifications',                    label: 'Push Notifications', icon: BellIcon },
-      { href: '/admin/email-campaigns',                  label: 'Email Campaigns',    icon: Mail },
-      { href: '/admin/popups',                           label: 'Popups',             icon: Maximize2 },
-      { href: '/admin/smart-bar',                        label: 'Smart Bar',          icon: Megaphone },
-    ],
-  },
-  {
-    label: 'SEO', icon: Search,
-    children: [
-      { href: '/admin/seo',                      label: 'SEO Tools',        icon: Search },
-      { href: '/admin/seo/settings',             label: 'Global Settings',  icon: Settings },
-      { href: '/admin/seo/sitemap',              label: 'Sitemap',          icon: Globe },
-      { href: '/admin/seo/robots',               label: 'Robots.txt',       icon: FileText },
-      { href: '/admin/seo/redirects',            label: 'Redirects',        icon: RotateCcw },
-      { href: '/admin/seo/products',             label: 'Product SEO',      icon: Package },
-      { href: '/admin/seo/categories',           label: 'Category SEO',     icon: Layers },
+      { href: '/admin/fraud',        label: 'Fraud Detection', icon: ShieldAlert },
+      { href: '/admin/wholesale',    label: 'Wholesale',       icon: Layers },
     ],
   },
   {
     label: 'Finance', icon: Wallet,
     children: [
+      { href: '/admin/refunds',                  label: 'Refunds',          icon: RotateCcw },
+      { href: '/admin/returns',                  label: 'Returns',          icon: RefreshCw },
+      { href: '/admin/cod-reconciliation',       label: 'COD Recon',        icon: DollarSign },
       { href: '/admin/finance/payment-gateways', label: 'Payment Gateways', icon: CreditCard },
       { href: '/admin/finance/payments',         label: 'Transactions',     icon: DollarSign },
+      { href: '/admin/finance/tax',              label: 'Tax Setup',        icon: Calculator },
+      { href: '/admin/finance/profit-loss',      label: 'P&L Analytics',   icon: TrendingDown },
+      { href: '/admin/finance/wallet',           label: 'Digital Wallet',   icon: Wallet },
+      { href: '/admin/finance/store-credit',     label: 'Store Credit',     icon: BadgePercent },
     ],
   },
+  {
+    label: 'Fulfilment', icon: Truck,
+    children: [
+      { href: '/admin/pos',                label: 'POS Terminal',   icon: Monitor },
+      { href: '/admin/courier',            label: 'Courier',        icon: Truck },
+      { href: '/admin/courier/setup',      label: 'Courier Setup',  icon: Settings },
+      { href: '/admin/sellers',            label: 'Sellers',        icon: Store },
+      { href: '/admin/delivery-boys',      label: 'Delivery Boys',  icon: Bike },
+      { href: '/admin/pickup-points',      label: 'Pickup Points',  icon: MapPin },
+      { href: '/admin/shipping-zones',     label: 'Shipping Zones', icon: Map },
+      { href: '/admin/shiprocket',         label: 'Shiprocket',     icon: Rocket },
+    ],
+  },
+
+  /* ── CUSTOMERS ── */
+  { section: 'Customers' },
+  {
+    label: 'CRM', icon: Users,
+    children: [
+      { href: '/admin/users',     label: 'Customer Profiles', icon: Users },
+      { href: '/admin/segments',  label: 'Segments',          icon: Users2 },
+      { href: '/admin/loyalty',   label: 'Club Points',       icon: Star },
+      { href: '/admin/referrals', label: 'Referrals',         icon: Share2 },
+    ],
+  },
+  {
+    label: 'Support', icon: LifeBuoy,
+    children: [
+      { href: '/admin/support',  label: 'Support Tickets', icon: LifeBuoy },
+      { href: '/admin/refunds',  label: 'Refund Requests', icon: RotateCcw },
+    ],
+  },
+
+  /* ── CONTENT ── */
+  { section: 'Content' },
+  {
+    label: 'Content', icon: ScrollText,
+    children: [
+      { href: '/admin/content',          label: 'CMS Pages',        icon: FileText },
+      { href: '/admin/blog',             label: 'Blog',             icon: FileText },
+      { href: '/admin/design',           label: 'Banners & Sliders',icon: Image },
+      { href: '/admin/book-submissions', label: 'Book Submissions',  icon: BookMarked },
+      { href: '/admin/classifieds',      label: 'Classifieds',      icon: LayoutList },
+      { href: '/admin/reviews',          label: 'Reviews',          icon: MessageSquare },
+      { href: '/admin/popups',           label: 'Popups',           icon: Maximize2 },
+      { href: '/admin/smart-bar',        label: 'Smart Bar',        icon: Megaphone },
+    ],
+  },
+
+  /* ── MARKETING & CHANNELS ── */
+  { section: 'Marketing & Channels' },
+  {
+    label: 'Marketing', icon: TrendingUp,
+    children: [
+      { href: '/admin/analytics',                       label: 'Analytics Hub',    icon: TrendingUp },
+      { href: '/admin/analytics/meta-pixel',            label: 'Meta Pixel',       icon: Target },
+      { href: '/admin/analytics/google-analytics',      label: 'Google Analytics', icon: BarChart3 },
+      { href: '/admin/analytics/google-tag-manager',    label: 'Tag Manager',      icon: Tag },
+      { href: '/admin/analytics/google-search-console', label: 'Search Console',   icon: Globe },
+      { href: '/admin/sms',                             label: 'SMS',              icon: MessageCircle },
+      { href: '/admin/notifications',                   label: 'Push Notifications',icon: BellIcon },
+      { href: '/admin/email-campaigns',                 label: 'Email Campaigns',  icon: Mail },
+      { href: '/admin/affiliates',                      label: 'Affiliates',       icon: Share2 },
+      { href: '/admin/advanced-reports',                label: 'Advanced Reports', icon: PieChart },
+    ],
+  },
+  {
+    label: 'Sales Channels', icon: ShoppingCart,
+    children: [
+      { href: '/admin/channels/facebook',  label: 'Facebook Shop',   icon: Share2 },
+      { href: '/admin/channels/instagram', label: 'Instagram',       icon: Instagram },
+      { href: '/admin/channels/google',    label: 'Google Shopping', icon: ShoppingCart },
+      { href: '/admin/channels/whatsapp',  label: 'WhatsApp',        icon: WhatsApp },
+      { href: '/admin/channels/live',      label: 'Live Commerce',   icon: Radio },
+    ],
+  },
+
+  /* ── VISIBILITY ── */
+  { section: 'Visibility' },
+  {
+    label: 'SEO', icon: Search,
+    children: [
+      { href: '/admin/seo',              label: 'SEO Tools',      icon: Search },
+      { href: '/admin/seo/settings',     label: 'Global Settings',icon: Settings },
+      { href: '/admin/seo/sitemap',      label: 'Sitemap',        icon: Globe },
+      { href: '/admin/seo/robots',       label: 'Robots.txt',     icon: FileText },
+      { href: '/admin/seo/redirects',    label: 'Redirects',      icon: RotateCcw },
+      { href: '/admin/seo/products',     label: 'Product SEO',    icon: Package },
+      { href: '/admin/seo/categories',   label: 'Category SEO',   icon: Layers },
+    ],
+  },
+
+  /* ── INTELLIGENCE ── */
+  { section: 'Intelligence' },
   {
     label: 'AI Studio', icon: Sparkles,
     children: [
-      { href: '/admin/ai-studio',               label: 'AI Studio',         icon: Sparkles },
-      { href: '/admin/ai-studio/orchestrator',  label: 'Orchestrator',      icon: Cpu },
-      { href: '/admin/ai-studio/agents',        label: 'Agents',            icon: Bot },
-      { href: '/admin/ai-studio/providers',     label: 'Providers',         icon: Zap },
-      { href: '/admin/ai-studio/library',       label: 'Prompt Library',    icon: Library },
-      { href: '/admin/ai-studio/logs',          label: 'Logs',              icon: ScrollText },
+      { href: '/admin/ai-studio',              label: 'AI Studio',     icon: Sparkles },
+      { href: '/admin/ai-studio/orchestrator', label: 'Orchestrator',  icon: Cpu },
+      { href: '/admin/ai-studio/agents',       label: 'Agents',        icon: Bot },
+      { href: '/admin/ai-studio/providers',    label: 'Providers',     icon: Zap },
+      { href: '/admin/ai-studio/library',      label: 'Prompt Library',icon: Library },
+      { href: '/admin/ai-studio/logs',         label: 'Logs',          icon: ScrollText },
     ],
   },
+
+  /* ── SYSTEM ── */
+  { section: 'System' },
   {
-    label: 'Growth', icon: TrendingUp,
+    label: 'Security', icon: Lock,
     children: [
-      { href: '/admin/affiliates',        label: 'Affiliates',       icon: Share2 },
-      { href: '/admin/segments',          label: 'Segments',         icon: Users2 },
-      { href: '/admin/advanced-reports',  label: 'Advanced Reports', icon: PieChart },
+      { href: '/admin/security/audit-logs',    label: 'Audit Logs',       icon: ClipboardCheck },
+      { href: '/admin/security/access-control',label: 'Access Control',   icon: UserCog },
+      { href: '/admin/staff',                  label: 'Staff & Roles',    icon: Users },
     ],
   },
   {
+>>>>>>> 2b68347 (feat: reorganize admin sidebar with enterprise IA + section dividers)
     label: 'Configuration', icon: Settings,
     children: [
-      { href: '/admin/localization', label: 'Multi-Currency/Lang', icon: Globe },
-      { href: '/admin/design',       label: 'Design Studio',       icon: Palette },
-      { href: '/admin/addons',       label: 'Addon Manager',       icon: Puzzle },
-      { href: '/admin/staff',        label: 'Staff & Permissions', icon: UserCog },
-      { href: '/admin/settings',     label: 'Settings',            icon: Settings },
+      { href: '/admin/localization',       label: 'Multi-Currency/Lang', icon: Globe },
+      { href: '/admin/addons',             label: 'Addon Manager',       icon: Puzzle },
+      { href: '/admin/search-config',      label: 'Advanced Search',     icon: Wifi },
+      { href: '/admin/settings',           label: 'Settings',            icon: Settings },
     ],
   },
 ];
@@ -321,6 +374,19 @@ const PAGE_TITLES: Record<string, string> = {
   '/admin/staff': 'Staff & Permissions',
   '/admin/design': 'Design Studio',
   '/admin/categories/mega-menu': 'Mega Menu Editor',
+  '/admin/content': 'CMS Pages',
+  '/admin/channels/facebook': 'Facebook Shop',
+  '/admin/channels/instagram': 'Instagram Channel',
+  '/admin/channels/google': 'Google Shopping',
+  '/admin/channels/whatsapp': 'WhatsApp Commerce',
+  '/admin/channels/live': 'Live Commerce',
+  '/admin/security/audit-logs': 'Audit Logs',
+  '/admin/security/access-control': 'Access Control (RBAC)',
+  '/admin/finance/tax': 'Tax Setup',
+  '/admin/finance/profit-loss': 'P&L Analytics',
+  '/admin/finance/wallet': 'Digital Wallet',
+  '/admin/finance/store-credit': 'Store Credit',
+  '/admin/search-config': 'Advanced Search Config',
   '/admin/finance/payment-gateways': 'Payment Gateways',
   '/admin/finance/payments': 'Payment Transactions',
   '/admin/courier/setup': 'Courier Setup',
@@ -335,14 +401,12 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
 
   // Accordion: only one group open at a time
   const [openGroup, setOpenGroup] = useState<string | null>(() => {
-    // auto-open the group that contains the current route
     for (const item of NAV) {
       if (isParent(item) && groupIsActive(item.children, pathname)) return item.label;
     }
     return null;
   });
 
-  // When route changes, open the matching group
   useEffect(() => {
     for (const item of NAV) {
       if (isParent(item) && groupIsActive(item.children, pathname)) {
@@ -388,7 +452,13 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-0.5 overscroll-contain">
         {NAV.map((item, i) =>
-          isParent(item) ? (
+          isSection(item) ? (
+            <div key={`section-${i}`} className="pt-4 pb-1 px-3">
+              <p className="text-[9px] font-black uppercase tracking-[0.15em]" style={{ color: 'rgba(255,255,255,0.28)' }}>
+                {item.section}
+              </p>
+            </div>
+          ) : isParent(item) ? (
             <NavGroupItem
               key={i}
               item={item}
@@ -398,7 +468,7 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
               onClose={onClose}
             />
           ) : (
-            <NavLeafItem key={item.href} item={item} pathname={pathname} onClose={onClose} />
+            <NavLeafItem key={(item as NavLeaf).href} item={item as NavLeaf} pathname={pathname} onClose={onClose} />
           )
         )}
       </nav>
