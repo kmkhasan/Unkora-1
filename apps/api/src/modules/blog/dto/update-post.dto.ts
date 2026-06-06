@@ -1,5 +1,5 @@
 import { IsArray, IsEnum, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
-import { BlogPostStatus } from '@prisma/client';
+import { BlogPostStatus } from '@unkora/database';
 
 export class UpdatePostDto {
   @IsOptional()

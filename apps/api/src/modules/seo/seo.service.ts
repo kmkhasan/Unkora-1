@@ -5,7 +5,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@unkora/database';
 import { PrismaService } from '../../database/prisma.service';
 import { UpsertSeoMetadataDto } from './dto/upsert-seo-metadata.dto';
 import { CreateRedirectDto } from './dto/create-redirect.dto';
