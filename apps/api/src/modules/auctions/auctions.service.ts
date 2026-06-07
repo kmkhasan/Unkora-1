@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { AuctionStatus } from '@prisma/client';
+import { AuctionStatus } from '@unkora/database';
 import { PrismaService } from '../../database/prisma.service';
 import { CreateAuctionDto } from './dto/create-auction.dto';
 import { UpdateAuctionDto } from './dto/update-auction.dto';

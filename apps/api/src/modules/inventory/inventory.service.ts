@@ -4,7 +4,7 @@ import { EmailService } from '../email/email.service';
 import { AdjustStockDto } from './dto/adjust-stock.dto';
 import { StockAdjustmentDto } from './dto/stock-adjustment.dto';
 import { SetStockDto } from './dto/set-stock.dto';
-import { AdjustmentStatus, InventoryMovementType, StockStatus } from '@prisma/client';
+import { AdjustmentStatus, InventoryMovementType, StockStatus } from '@unkora/database';
 import { WarehouseService } from './warehouse.service';
 
 const LOW_STOCK_THRESHOLD = 5;

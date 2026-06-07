@@ -1,5 +1,5 @@
 import { IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
-import { AdjustmentReason } from '@prisma/client';
+import { AdjustmentReason } from '@unkora/database';
 
 export class StockAdjustmentDto {
   @IsString()
