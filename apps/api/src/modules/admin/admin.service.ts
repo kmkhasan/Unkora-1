@@ -1,5 +1,5 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import { OrderStatus } from '@prisma/client';
+import { OrderStatus } from '@unkora/database';
 import * as argon2 from 'argon2';
 
 import { PrismaService } from '../../database/prisma.service';

@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional } from 'class-validator';
-import { UserRole, UserStatus } from '@prisma/client';
+import { UserRole, UserStatus } from '@unkora/database';
 
 export class UpdateUserDto {
   @IsOptional()
