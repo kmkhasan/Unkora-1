@@ -1,7 +1,7 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../database/prisma.service';
 import { CreatePurchaseOrderDto, ReceivePurchaseOrderDto } from './dto/purchase-order.dto';
-import { InventoryMovementType, PurchaseOrderStatus, StockStatus } from '@prisma/client';
+import { InventoryMovementType, PurchaseOrderStatus, StockStatus } from '@unkora/database';
 
 @Injectable()
 export class PurchaseOrderService {

@@ -31,7 +31,7 @@
     "@nestjs/throttler": "^6.3.0",
     "@types/multer": "^2.1.0",
     "@types/nodemailer": "^8.0.0",
-    "@unkora/database": "*",
+    "@unkora/database": "^0.0.1",
     "@unkora/types": "*",
     "argon2": "^0.41.1",
     "axios": "^1.16.1",

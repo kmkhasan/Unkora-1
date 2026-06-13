@@ -2,7 +2,7 @@
  * Run once to upsert the admin user with a known password.
  * Usage: DATABASE_URL="..." npx ts-node --compiler-options '{"module":"CommonJS"}' scripts/reset-admin.ts
  */
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@unkora/database';
 import * as argon2 from 'argon2';
 
 const prisma = new PrismaClient();
