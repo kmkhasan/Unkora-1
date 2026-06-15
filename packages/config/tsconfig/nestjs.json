@@ -6,7 +6,7 @@
     "moduleResolution": "Node10",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "strictPropertyInitialization": false,
+    "strictPropertyInitialization": false, "noImplicitAny": false, "declaration": false, "declarationMap": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "exactOptionalPropertyTypes": false

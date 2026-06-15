@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@unkora/database';
 
 import { PrismaService } from '../../database/prisma.service';
 import type { BookFilterDto } from './dto/book-filter.dto';
