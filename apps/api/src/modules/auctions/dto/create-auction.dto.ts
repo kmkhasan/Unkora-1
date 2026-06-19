@@ -1,5 +1,5 @@
 import { IsDateString, IsEnum, IsNumber, IsOptional, IsString, Min } from 'class-validator';
-import { AuctionStatus } from '@prisma/client';
+import { AuctionStatus } from '@unkora/database';
 
 export class CreateAuctionDto {
   @IsString()
