@@ -1,5 +1,5 @@
 import { IsBoolean, IsDateString, IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
-import { PrepaymentType, PreorderConfigStatus } from '@prisma/client';
+import { PrepaymentType, PreorderConfigStatus } from '@unkora/database';
 import { Type } from 'class-transformer';
 
 export class CreatePreorderConfigDto {

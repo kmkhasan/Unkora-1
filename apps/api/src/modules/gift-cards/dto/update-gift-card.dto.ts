@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { GiftCardStatus } from '@prisma/client';
+import { GiftCardStatus } from '@unkora/database';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
 
 export class UpdateGiftCardDto {
