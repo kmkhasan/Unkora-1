@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { GiftCardStatus } from '@prisma/client';
+import { GiftCardStatus } from '@unkora/database';
 import { PrismaService } from '../../database/prisma.service';
 import type { CreateGiftCardDto } from './dto/create-gift-card.dto';
 import type { UpdateGiftCardDto } from './dto/update-gift-card.dto';
