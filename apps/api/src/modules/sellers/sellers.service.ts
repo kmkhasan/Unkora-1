@@ -1,5 +1,5 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { SellerStatus } from '@prisma/client';
+import { SellerStatus } from '@unkora/database';
 import { PrismaService } from '../../database/prisma.service';
 import type { ApplySellerDto } from './dto/apply-seller.dto';
 import type { UpdateSellerProfileDto } from './dto/update-seller-profile.dto';
