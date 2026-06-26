@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PointTransactionType } from '@prisma/client';
+import { PointTransactionType } from '@unkora/database';
 import { PrismaService } from '../../database/prisma.service';
 import type { UpdateLoyaltyConfigDto } from './dto/update-loyalty-config.dto';
 import type { AdjustPointsDto } from './dto/adjust-points.dto';
