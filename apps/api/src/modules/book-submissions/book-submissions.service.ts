@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { BookSubmissionStatus, BookType } from '@prisma/client';
+import { BookSubmissionStatus, BookType } from '@unkora/database';
 
 import { PrismaService } from '../../database/prisma.service';
 import type { SubmitBookDto } from './dto/submit-book.dto';

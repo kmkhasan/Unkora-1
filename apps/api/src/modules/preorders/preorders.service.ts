@@ -14,7 +14,7 @@ import {
   PreorderEventType,
   PrepaymentType,
   Prisma,
-} from '@prisma/client';
+} from '@unkora/database';
 import type { CreatePreorderConfigDto } from './dto/create-config.dto';
 import type { UpdatePreorderConfigDto } from './dto/update-config.dto';
 import type { PlacePreorderDto } from './dto/place-preorder.dto';
