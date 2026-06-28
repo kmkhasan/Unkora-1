@@ -11,7 +11,7 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
-import { ProductSource } from '@prisma/client';
+import { ProductSource } from '@unkora/database';
 
 export class CreateBookDetailDto {
   @ApiProperty()
