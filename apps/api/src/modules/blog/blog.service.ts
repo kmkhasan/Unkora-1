@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { BlogPostStatus } from '@prisma/client';
+import { BlogPostStatus } from '@unkora/database';
 import { randomBytes } from 'crypto';
 
 import { PrismaService } from '../../database/prisma.service';

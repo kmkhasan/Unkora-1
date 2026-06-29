@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { PreorderOrderStatus } from '@prisma/client';
+import { PreorderOrderStatus } from '@unkora/database';
 
 export class UpdatePreorderStatusDto {
   @IsEnum(PreorderOrderStatus)
