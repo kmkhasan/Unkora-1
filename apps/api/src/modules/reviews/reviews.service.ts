@@ -1,5 +1,5 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { OrderStatus } from '@prisma/client';
+import { OrderStatus } from '@unkora/database';
 
 import { PrismaService } from '../../database/prisma.service';
 import type { CreateReviewDto } from './dto/create-review.dto';
@@ -53,7 +53,7 @@ export class ReviewsService {
     const totalCount = reviews.length;
     const averageRating =
       totalCount > 0
-        ? Math.round((reviews.reduce((sum, r) => sum + r.rating, 0) / totalCount) * 10) / 10
+        ? Math.round((reviews.reduce((sum: number, r: { rating: number }) => sum + r.rating, 0) / totalCount) * 10) / 10
         : 0;
 
     return { reviews, averageRating, totalCount };

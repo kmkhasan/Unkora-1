@@ -24,8 +24,8 @@ export class CartService {
 
   async getCart(userId: string) {
     const cart = await this.getOrCreateCart(userId);
-    const subtotal = cart.items.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0);
-    const itemCount = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+    const subtotal = cart.items.reduce((sum: number, item: { price: any, quantity: number }) => sum + Number(item.price) * item.quantity, 0);
+    const itemCount = cart.items.reduce((sum: number, item: { quantity: number }) => sum + item.quantity, 0);
     return { ...cart, subtotal, itemCount };
   }
 
@@ -63,7 +63,7 @@ export class CartService {
 
   async updateItem(userId: string, itemId: string, dto: UpdateCartItemDto) {
     const cart = await this.getOrCreateCart(userId);
-    const item = cart.items.find((i) => i.id === itemId);
+    const item = cart.items.find((i: { id: string }) => i.id === itemId);
     if (!item) throw new NotFoundException('Cart item not found');
 
     if (dto.quantity === 0) {
@@ -81,7 +81,7 @@ export class CartService {
 
   async removeItem(userId: string, itemId: string) {
     const cart = await this.getOrCreateCart(userId);
-    const item = cart.items.find((i) => i.id === itemId);
+    const item = cart.items.find((i: { id: string }) => i.id === itemId);
     if (!item) throw new NotFoundException('Cart item not found');
     await this.prisma.cartItem.delete({ where: { id: itemId } });
     return this.getCart(userId);

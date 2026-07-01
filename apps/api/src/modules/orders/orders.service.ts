@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { OrderStatus } from '@prisma/client';
+import { OrderStatus } from '@unkora/database';
 import * as crypto from 'crypto';
 
 import { PrismaService } from '../../database/prisma.service';
@@ -47,7 +47,7 @@ export class OrdersService {
       }
     }
 
-    const subtotal = cart.items.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0);
+    const subtotal = cart.items.reduce((sum: number, item: { price: any, quantity: number }) => sum + Number(item.price) * item.quantity, 0);
     const shippingCost = subtotal >= 1000 ? 0 : 60; // Free shipping over ৳1000
 
     let discountAmount = 0;
@@ -58,7 +58,7 @@ export class OrdersService {
 
     const total = subtotal + shippingCost - discountAmount;
 
-    const order = await this.prisma.$transaction(async (tx) => {
+    const order = await this.prisma.$transaction(async (tx: any) => {
       const newOrder = await tx.order.create({
         data: {
           orderNumber: this.generateOrderNumber(),
@@ -81,7 +81,7 @@ export class OrdersService {
             postalCode: address.postalCode,
           },
           items: {
-            create: cart.items.map((item) => ({
+            create: cart.items.map((item: any) => ({
               productId: item.productId,
               variantId: item.variantId,
               quantity: item.quantity,
@@ -135,7 +135,7 @@ export class OrdersService {
         await this.emailService.sendOrderConfirmation(user.email, {
           orderNumber: order.orderNumber,
           total: String(order.total),
-          items: order.items.map((item) => ({
+          items: order.items.map((item: any) => ({
             productName: item.productName,
             quantity: item.quantity,
             price: String(item.unitPrice),
@@ -188,7 +188,7 @@ export class OrdersService {
       });
     }
 
-    const subtotal = dto.items.reduce((sum, orderItem) => {
+    const subtotal = dto.items.reduce((sum: number, orderItem: { productId: string, quantity: number }) => {
       const product = products.find(p => p.id === orderItem.productId)!;
       return sum + Number(product.salePrice ?? product.basePrice) * orderItem.quantity;
     }, 0);
@@ -202,7 +202,7 @@ export class OrdersService {
 
     const total = subtotal + shippingCost - discountAmount;
 
-    const order = await this.prisma.$transaction(async (tx) => {
+    const order = await this.prisma.$transaction(async (tx: any) => {
       const newOrder = await tx.order.create({
         data: {
           orderNumber: this.generateOrderNumber(),
@@ -360,7 +360,7 @@ export class OrdersService {
       throw new BadRequestException('Order cannot be cancelled at this stage');
     }
 
-    return this.prisma.$transaction(async (tx) => {
+    return this.prisma.$transaction(async (tx: any) => {
       const updated = await tx.order.update({
         where: { id },
         data: { status: OrderStatus.CANCELLED, cancelReason: reason },
@@ -435,7 +435,7 @@ export class OrdersService {
 
   async updateStatus(id: string, status: OrderStatus, note?: string) {
     const order = await this.findById(id);
-    const updated = await this.prisma.$transaction(async (tx) => {
+    const updated = await this.prisma.$transaction(async (tx: any) => {
       const result = await tx.order.update({
         where: { id: order.id },
         data: { status, deliveredAt: status === OrderStatus.DELIVERED ? new Date() : undefined },

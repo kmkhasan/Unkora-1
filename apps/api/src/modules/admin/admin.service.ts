@@ -1,5 +1,5 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import { OrderStatus } from '@prisma/client';
+import { OrderStatus } from '@unkora/database';
 import * as argon2 from 'argon2';
 
 import { PrismaService } from '../../database/prisma.service';
@@ -106,7 +106,7 @@ export class AdminService {
     });
 
     const chart: Record<string, number> = {};
-    orders.forEach((o) => {
+    orders.forEach((o: { total: any, createdAt: Date }) => {
       const key = o.createdAt.toISOString().split('T')[0]!;
       chart[key] = (chart[key] ?? 0) + Number(o.total);
     });
