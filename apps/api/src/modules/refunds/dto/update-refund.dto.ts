@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { RefundStatus } from '@prisma/client';
+import { RefundStatus } from '@unkora/database';
 
 export class UpdateRefundDto {
   @IsEnum(RefundStatus) status: RefundStatus;

@@ -1,5 +1,5 @@
 import { IsBoolean, IsDateString, IsEnum, IsNumber, IsOptional, IsString, Min } from 'class-validator';
-import { DiscountType } from '@prisma/client';
+import { DiscountType } from '@unkora/database';
 
 export class UpdateCouponDto {
   @IsOptional() @IsString() description?: string;
