@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@unkora/database';
 import { PrismaService } from '../../database/prisma.service';
 import { AiProviderFactory } from './providers/ai-provider.factory';
 import { GenerateProductContentDto } from './dto/generate-product-content.dto';

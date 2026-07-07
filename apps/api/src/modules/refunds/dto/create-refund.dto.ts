@@ -1,5 +1,5 @@
 import { IsEnum, IsNumber, IsOptional, IsPositive, IsString, MaxLength } from 'class-validator';
-import { RefundReason } from '@prisma/client';
+import { RefundReason } from '@unkora/database';
 
 export class CreateRefundDto {
   @IsString() orderId: string;

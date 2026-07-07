@@ -14,7 +14,7 @@ import {
   PreorderEventType,
   PrepaymentType,
   Prisma,
-} from '@prisma/client';
+} from '@unkora/database';
 import type { CreatePreorderConfigDto } from './dto/create-config.dto';
 import type { UpdatePreorderConfigDto } from './dto/update-config.dto';
 import type { PlacePreorderDto } from './dto/place-preorder.dto';
@@ -634,7 +634,7 @@ export class PreordersService {
       select: { id: true },
     });
 
-    const results = [];
+    const results: any[] = [];
     for (const o of readyOrders) {
       try {
         const r = await this.convertToOrder(o.id, adminId);
