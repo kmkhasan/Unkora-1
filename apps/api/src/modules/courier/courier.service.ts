@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CourierProvider } from '@prisma/client';
+import { CourierProvider } from '@unkora/database';
 import { PrismaService } from '../../database/prisma.service';
 
 @Injectable()
